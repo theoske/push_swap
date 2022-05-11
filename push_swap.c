@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/05/11 17:35:19 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:47:03 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*rotate(char *str)
 	return (str);
 }
 
-char	*rev_rotate(char *str)
+char	*rev_rotate(char *str)//a faire
 {
 	int		i;
 	char	swapper;
