@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/05/10 17:50:48 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/05/11 16:06:04 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,27 @@ char	**push(char *gifter, char *receiver) //push number
 	}
 	tab[0][i] = 0;
 	return (tab);
+}
+
+char	*rotate(char *str)
+{
+	int		i;
+	char	swapper;
+	char	swapper2;
+	char	endchar;
+
+	if (!str)
+		return (NULL);
+	endchar = str[0];
+	i = ft_strlen(str) - 1;
+	swapper = str[i - 1];
+	str[i - 1] = str[i];
+	i -= 2;
+	swapper2 = str[i];
+	str[i] = swapper;
+	while (i > 0)
+	{
+		swapper = str[i - 1];
+		str[i - 1] = str[i];
+	}
 }
