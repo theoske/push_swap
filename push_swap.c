@@ -31,6 +31,7 @@ unsigned int	ft_strlen(const char *s)
 0 : sa
 1 : sb
 2 : ss
+
 */
 
 void	ft_putstr(char *str)
