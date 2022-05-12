@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/05/11 17:47:03 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:43:28 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*rotate(char *str)
 	return (str);
 }
 
-char	*rev_rotate(char *str)//a faire
+char	*rev_rotate(char *str)
 {
 	int		i;
 	char	swapper;
@@ -103,16 +103,16 @@ char	*rev_rotate(char *str)//a faire
 	startchar = str[ft_strlen(str) - 1];
 	i = 0;
 	swapper = str[i];
-	while (i > 0)
+	while (str[i + 1])
 	{
 		swapper2 = str[i];
 		str[i] = swapper;
-		i--;
+		i++;
 		swapper = str[i];
 		str[i] = swapper2;
-		i--;
+		i++;
 	}
-	str[ft_strlen(str) - 1] = endchar;
+	str[0] = startchar;
 	return (str);
 }
 
