@@ -46,6 +46,10 @@ void	ft_putstr(char *str)
 	}
 }
 
+/* 0 : sa
+1 : sb
+2 : ss
+*/
 char	*swap(char *tab, int doprint)
 {
 	int		swapper;
@@ -62,17 +66,18 @@ char	*swap(char *tab, int doprint)
 	return (tab);
 }
 
-char	**push(char *gifter, char *receiver) 
+char	**push(char *gifter, char *receiver)
 {
 	char	**tab;
 	int		i;
 
 	if (!gifter)
 		return (NULL);
-	*tab = malloc(2);
+	tab = malloc(2);
 	tab[0] = malloc(ft_strlen(gifter) - 1);
 	tab[1] = malloc(ft_strlen(receiver) + 1);
 	tab[1][0] = gifter[0];
+	i = 0;
 	while (receiver && receiver[i])
 	{
 		tab[1][i + 1] = receiver[i];
@@ -147,15 +152,29 @@ char	**double_swap(char **tab)
 	return (tab);
 }
 
+// 0 a_push
+// 1 b_push
+char	**pre_push(char *giver, char *receiver, int nb)
+{
+	char	**tab;
+
+	tab = push(giver, receiver);
+	if (nb == 0)
+		ft_putstr("pa\n");
+	else if (nb == 1)
+		ft_putstr("pb\n");
+	return (tab);
+}
+
 int main()
 {
 	char str[] = "12345";
 	char str2[] = "789";
 	char **tab;
 	tab = malloc(2);
-	tab[0] = str;
-	tab[1] = str2;
-	tab = double_swap(tab);
-	printf(" %s ", tab[0]);
-	return 0;
+	// tab[0] = str;
+	// tab[1] = str2;
+	tab = pre_push(str, str2, 0);
+	// printf(" %s ", tab[0]);
+	return (0);
 }
