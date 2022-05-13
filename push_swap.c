@@ -106,15 +106,19 @@ char	*rotate(char *str)
 	endchar = str[0];
 	i = ft_strlen(str) - 1;
 	swapper = str[i];
-	while (i > 0)
+	while (i >= 0)
 	{
 		swapper2 = str[i];
 		str[i] = swapper;
 		i--;
-		swapper = str[i];
-		str[i] = swapper2;
-		i--;
+		if (i >= 0)
+		{
+			swapper = str[i];
+			str[i] = swapper2;
+			i--;
+		}
 	}
+	str[ft_strlen(str)] = 0;
 	str[ft_strlen(str) - 1] = endchar;
 	return (str);
 }
@@ -131,15 +135,19 @@ char	*rev_rotate(char *str)
 	startchar = str[ft_strlen(str) - 1];
 	i = 0;
 	swapper = str[i];
-	while (str[i + 1])
+	while (str[i])
 	{
 		swapper2 = str[i];
 		str[i] = swapper;
 		i++;
-		swapper = str[i];
-		str[i] = swapper2;
-		i++;
+		if (str[i])
+		{
+			swapper = str[i];
+			str[i] = swapper2;
+			i++;
+		}
 	}
+	str[i] = 0;
 	str[0] = startchar;
 	return (str);
 }
@@ -166,15 +174,66 @@ char	**pre_push(char *giver, char *receiver, int nb)
 	return (tab);
 }
 
+/* 0 ra
+ 1 rb
+ 2 rr
+*/
+char	**pre_rotate(char **tab, int option)
+{
+	if (option == 0)
+	{
+		tab[0] = rotate(tab[0]);
+		ft_putstr("ra\n");
+	}
+	else if (option == 1)
+	{
+		tab[1] = rotate(tab[1]);
+		ft_putstr("rb\n");
+	}
+	else if (option == 2)
+	{
+		tab[0] = rotate(tab[0]);
+		tab[1] = rotate(tab[1]);
+		ft_putstr("rr\n");
+	}
+	return (tab);
+}
+
+/* 0 rra
+ 1 rrb
+ 2 rrr
+*/
+char	**pre_rev_rotate(char **tab, int option)
+{
+	if (option == 0)
+	{
+		tab[0] = rev_rotate(tab[0]);
+		ft_putstr("rra\n");
+	}
+	else if (option == 1)
+	{
+		tab[1] = rev_rotate(tab[1]);
+		ft_putstr("rrb\n");
+	}
+	else if (option == 2)
+	{
+		tab[0] = rev_rotate(tab[0]);
+		tab[1] = rev_rotate(tab[1]);
+		ft_putstr("rrr\n");
+	}
+	return(tab);
+}
+
 int main()
 {
 	char str[] = "12345";
 	char str2[] = "789";
 	char **tab;
 	tab = malloc(2);
-	// tab[0] = str;
-	// tab[1] = str2;
-	tab = pre_push(str, str2, 0);
-	// printf(" %s ", tab[0]);
+	tab[0] = str;
+	tab[1] = str2;
+	tab = pre_rev_rotate(tab, 2);
+	printf("%s\n", tab[0]);
+	printf("%s\n", tab[1]);
 	return (0);
 }
