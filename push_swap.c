@@ -224,16 +224,83 @@ char	**pre_rev_rotate(char **tab, int option)
 	return(tab);
 }
 
-int main()
+int	ft_finder(const char *nptr)
 {
-	char str[] = "12345";
-	char str2[] = "789";
-	char **tab;
-	tab = malloc(2);
-	tab[0] = str;
-	tab[1] = str2;
-	tab = pre_rev_rotate(tab, 2);
-	printf("%s\n", tab[0]);
-	printf("%s\n", tab[1]);
+	int		i;
+
+	i = 0;
+	while (nptr[i] == ' ' || nptr[i] == '\t' || nptr[i] == '\n'
+		|| nptr[i] == '\v' || nptr[i] == '\f' || nptr[i] == '\r')
+		i++;
+	if (nptr[i] == '+')
+		i++;
+	return (i);
+}
+
+int	ft_atoi(const char *nptr)
+{
+	int			i;
+	int			j;
+	int			neg;
+	long int	nb;
+
+	neg = 1;
+	i = ft_finder(nptr);
+	nb = 0;
+	if (nptr[i] == '-' && nptr[i - 1] != '+')
+	{
+		neg = -1;
+		i++;
+	}
+	j = i;
+	while (nptr[i] >= 48 && nptr[i] <= 57)
+	{
+		nb *= 10;
+		nb += (nptr[i] - 48);
+		i++;
+	}
+	if (i - j > 10 && neg == 1)
+		return (-1);
+	if (i - j > 10)
+		return (0);
+	return (nb * neg);
+}
+
+int	*argtotab(char **argv)// tab garde pas sa valeur en sortant de while
+{
+	int		i;
+	int		*tab;
+
+	i = 1;
+	while (argv[i])
+	{
+		tab = malloc(sizeof(int) * i);
+		tab[i - 1] = ft_atoi(argv[i]);
+		printf("\n%d %d\n", tab[i - 1], i);
+		i++;
+	}
+	// printf("\n%d\n", tab[2]);
+	return (tab);
+}
+
+int main(int argc, char **argv)
+{
+	char	**tab;
+	int		*value;
+
+	value = argtotab(argv);
+	// printf("%s\n", argv[1]);
+	printf("\n%d\n", value[0]);
+	free (value);
 	return (0);
 }
+
+// char str[] = "12345";
+// char str2[] = "789";
+// char **tab;
+// tab = malloc(2);
+// tab[0] = str;
+// tab[1] = str2;
+// tab = pre_rev_rotate(tab, 2);
+// printf("%s\n", tab[0]);
+// printf("%s\n", tab[1]);
