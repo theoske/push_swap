@@ -326,15 +326,16 @@ int main(int argc, char **argv)
 	int		*value;
 
 	value = argtotab(argv);
-	int i = 0;
-	while (argv[i + 1])
-	{
-		printf("%d", value[i]);
-		i++;
-	}
 	free (value);
 	return (0);
 }
+
+// int i = 0;
+// 	while (argv[i + 1])
+// 	{
+// 		printf("%d", value[i]);
+// 		i++;
+// 	}
 
 // char str[] = "12345";
 // char str2[] = "789";
