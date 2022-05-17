@@ -266,20 +266,57 @@ int	ft_atoi(const char *nptr)
 	return (nb * neg);
 }
 
-int	*argtotab(char **argv)// tab garde pas sa valeur en sortant de while
+int	ft_intlen(int *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+int	*ft_strjoin(int *s1, int *s2)
+{
+	int		*join;
+	int		i;
+	int		j;
+
+	j = 0;
+	i = 0;
+	join = malloc(sizeof(int) * (sizeof(s1) + sizeof(s2) + 1));
+	if (!join)
+		return (NULL);
+	while (s1 && s1[i])
+	{
+		join[i] = *(char *)(s1 + i);
+		i++;
+	}
+	while (s2[j])
+	{
+		join[i + j] = *(char *)(s2 + j);
+		j++;
+	}
+	free (s1);
+	return (join);
+}
+
+int	*argtotab(char **argv)// tab garde pas valeur premieres cases en sortant de while
 {
 	int		i;
 	int		*tab;
+	int		*tab2;
 
 	i = 1;
+	tab = NULL;
 	while (argv[i])
 	{
+		tab2 = tab;
 		tab = malloc(sizeof(int) * i);
 		tab[i - 1] = ft_atoi(argv[i]);
-		printf("\n%d %d\n", tab[i - 1], i);
+		tab = ft_strjoin(tab2, tab + i - 1);
 		i++;
 	}
-	// printf("\n%d\n", tab[2]);
 	return (tab);
 }
 
@@ -289,8 +326,12 @@ int main(int argc, char **argv)
 	int		*value;
 
 	value = argtotab(argv);
-	// printf("%s\n", argv[1]);
-	printf("\n%d\n", value[0]);
+	int i = 0;
+	while (argv[i + 1])
+	{
+		printf("%d", value[i]);
+		i++;
+	}
 	free (value);
 	return (0);
 }
