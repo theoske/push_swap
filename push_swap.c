@@ -354,11 +354,33 @@ int	dup_check(int *value)
 	return (0);
 }
 
+int	nbr_check(char **argv)
+{
+	int		i;
+	int		j;
+
+	i = 1;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] > '9' || argv[i][j] < '0')
+				return (-1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	ft_check(char **argv)
 {
 	int	*value;
 
 	value = argtotab(argv);
+	if (nbr_check(argv) == -1)
+		return (-1);
 	if (a_sorted(value) == -1)
 		return (-1);
 	if (dup_check(value) == -1)
@@ -372,7 +394,7 @@ int main(int argc, char **argv)
 	int		*value;
 
 	if (ft_check(argv) == -1)
-		return (-1);
+		printf("error\n");//return (-1);
 	value = argtotab(argv);
 	free (value);
 	return (0);
