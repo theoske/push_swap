@@ -388,13 +388,19 @@ int	ft_check(char **argv)
 	return (0);
 }
 
+int	ft_error(void)
+{
+	ft_putstr("Error\n");
+	return (-1);
+}
+
 int main(int argc, char **argv)
 {
 	char	**tab;
 	int		*value;
 
 	if (ft_check(argv) == -1)
-		printf("error\n");//return (-1);
+		return (ft_error());
 	value = argtotab(argv);
 	free (value);
 	return (0);
