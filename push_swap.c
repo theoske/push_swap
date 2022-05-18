@@ -417,12 +417,15 @@ int	ft_error(void)
 
 int main(int argc, char **argv)
 {
-	char	**tab;
 	int		*value;
 
 	if (ft_check(argv) == -1)
 		return (ft_error());
 	value = argtotab(argv);
+	if (sizeof(value) <= sizeof(int) * 5)
+		small_sort(value);//a faire
+	else
+		radix_sort(value);//a faire
 	free (value);
 	return (0);
 }
