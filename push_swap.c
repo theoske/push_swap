@@ -320,11 +320,59 @@ int	*argtotab(char **argv)// tab garde pas valeur premieres cases en sortant de 
 	return (tab);
 }
 
+int	a_sorted(int *value)
+{
+	int		i;
+
+	i = 0;
+	while (value[i + 1])
+	{
+		if (value[i] > value[i + 1])
+			return (0);
+		i++;
+	}
+	return (-1);
+}
+
+int	dup_check(int *value)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (value[i])
+	{
+		j = 0;
+		while (value[j])
+		{
+			if (i != j && value[i] == value[j])
+				return (-1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	ft_check(char **argv)
+{
+	int	*value;
+
+	value = argtotab(argv);
+	if (a_sorted(value) == -1)
+		return (-1);
+	if (dup_check(value) == -1)
+		return (-1);
+	return (0);
+}
+
 int main(int argc, char **argv)
 {
 	char	**tab;
 	int		*value;
 
+	if (ft_check(argv) == -1)
+		return (-1);
 	value = argtotab(argv);
 	free (value);
 	return (0);
