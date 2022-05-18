@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
 unsigned int	ft_strlen(const char *s)
 {
 	unsigned int	i;
@@ -301,7 +300,7 @@ int	*ft_strjoin(int *s1, int *s2)
 	return (join);
 }
 
-int	*argtotab(char **argv)// tab garde pas valeur premieres cases en sortant de while
+int	*argtotab(char **argv)// probleme
 {
 	int		i;
 	int		*tab;
@@ -351,7 +350,6 @@ int	dup_check(int *value)
 				return (-1);
 			j++;
 		}
-		printf("%d\n", value[i]);
 		i++;
 	}
 	return (0);
@@ -415,16 +413,42 @@ int	ft_error(void)
 	return (-1);
 }
 
-void	small_sort(int *stacka)
+int	*order(int *stacka)
 {
+	int		i;
+	int		j;
+	int		*nbr;
 
+	i = 0;
+	nbr = malloc(sizeof(stacka));
+	while (stacka[i])
+	{
+		j = 0;
+		nbr[i] = 0;
+		while (stacka[j])
+		{
+			if (stacka[i] > stacka[j])
+				nbr[i]++;
+			j++;
+		}
+		i++;
+	}
+	return (nbr);
 }
 
 void	radix_sort(int *stacka)
 {
-	
-}
+	int		i;
+	int		*nbr;
 
+	i = 0;
+	// while (stacka[i])
+	// {
+	// 	printf("%d\n", stacka[i]);
+	// 	i++;
+	// }
+}
+//pb argtotab
 int main(int argc, char **argv)
 {
 	int		*value;
@@ -432,8 +456,14 @@ int main(int argc, char **argv)
 	if (ft_check(argv) == -1)
 		return (ft_error());
 	value = argtotab(argv);
-	if (sizeof(value) <= sizeof(int) * 5)
-		small_sort(value);//a faire
+	int i =0;
+	while (value[i])
+	{
+		printf("%d\n", value[i]);
+		i++;
+	}
+	if (argc < 5)
+		printf("panon");//small_sort(value);//a faire
 	else
 		radix_sort(value);//a faire
 	free (value);
