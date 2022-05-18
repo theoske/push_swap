@@ -415,6 +415,16 @@ int	ft_error(void)
 	return (-1);
 }
 
+void	small_sort(int *stacka)
+{
+
+}
+
+void	radix_sort(int *stacka)
+{
+	
+}
+
 int main(int argc, char **argv)
 {
 	int		*value;
