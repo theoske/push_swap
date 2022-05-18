@@ -369,7 +369,8 @@ int	nbr_check(char **argv)
 		while (argv[i][j])
 		{
 			if ((argv[i][j] > '9' || argv[i][j] < '0')
-			&& argv[i][0] != '-')
+			&& argv[i][0] != '-' || (argv[i][0] == '-'
+			&& argv[i][1] == 0))
 				return (-1);
 			j++;
 		}
