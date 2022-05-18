@@ -323,7 +323,9 @@ int	*argtotab(char **argv)// tab garde pas valeur premieres cases en sortant de 
 int	a_sorted(int *value)
 {
 	int		i;
+	int		j;
 
+	j = 0;
 	i = 0;
 	while (value[i + 1])
 	{
@@ -349,6 +351,7 @@ int	dup_check(int *value)
 				return (-1);
 			j++;
 		}
+		printf("%d\n", value[i]);
 		i++;
 	}
 	return (0);
@@ -365,10 +368,25 @@ int	nbr_check(char **argv)
 		j = 0;
 		while (argv[i][j])
 		{
-			if (argv[i][j] > '9' || argv[i][j] < '0')
+			if ((argv[i][j] > '9' || argv[i][j] < '0')
+			&& argv[i][0] != '-')
 				return (-1);
 			j++;
 		}
+		i++;
+	}
+	return (0);
+}
+
+int	lim_check(int *value)
+{
+	int		i;
+
+	i = 0;
+	while (value[i])
+	{
+		if (value[i] > 2147483647 || value[i] < -2147483648)
+			return (-1);
 		i++;
 	}
 	return (0);
@@ -380,6 +398,8 @@ int	ft_check(char **argv)
 
 	value = argtotab(argv);
 	if (nbr_check(argv) == -1)
+		return (-1);
+	if (lim_check(value) == -1)
 		return (-1);
 	if (a_sorted(value) == -1)
 		return (-1);
