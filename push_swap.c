@@ -65,31 +65,29 @@ char	*swap(char *tab, int doprint)
 	return (tab);
 }
 
-char	**push(char *gifter, char *receiver)
+int	**push(int *gifter, int *receiver)
 {
-	char	**tab;
+	int		**tab;
 	int		i;
 
-	if (!gifter)
+	if (sizeof(gifter) == 0)
 		return (NULL);
-	tab = malloc(2);
-	tab[0] = malloc(ft_strlen(gifter) - 1);
-	tab[1] = malloc(ft_strlen(receiver) + 1);
+	tab = malloc(4);
+	tab[0] = malloc(sizeof(gifter) - 4);
+	tab[1] = malloc(sizeof(receiver) + 4);
 	tab[1][0] = gifter[0];
 	i = 0;
-	while (receiver && receiver[i])
+	while ((sizeof(receiver) - 4) > (i * 4))
 	{
 		tab[1][i + 1] = receiver[i];
 		i++;
 	}
-	tab[1][i + 1] = 0;
 	i = 0;
-	while (gifter[i + 1])
+	while ((i * 4) < (sizeof(gifter) + 4))
 	{
 		tab[0][i] = gifter[i + 1];
 		i++;
 	}
-	tab[0][i] = 0;
 	return (tab);
 }
 
@@ -161,9 +159,9 @@ char	**double_swap(char **tab)
 
 // 0 a_push
 // 1 b_push
-char	**pre_push(char *giver, char *receiver, int nb)
+int	**pre_push(int *giver, int *receiver, int nb)
 {
-	char	**tab;
+	int		**tab;
 
 	tab = push(giver, receiver);
 	if (nb == 0)
@@ -436,28 +434,46 @@ int	*order(int *stacka)
 void	radix_sort(int *value)
 {
 	int		i;
-	int		*index;
+	int		*stack[2];
+	int		**ret;
+	int		bitpush;
 
-	index = order(value);
-
+	stack[0] = order(value);
+	stack[1] = malloc(sizeof(stack[0]));
+	bitpush = 0;
+	while (i < (sizeof(value) / 4))
+	{
+		if ((stack[0][i] >> bitpush % 2) == 0)
+			ret = pre_push(stack[0], stack[1], 0);
+		else
+			ret = pre_rotate(stack, 0);
+	}
 }
 
 int main(int argc, char **argv)
 {
-	int		*value;
-	int		*index;
+	// int		*value;
+	// int		*index;
 
-	value = argtotab(argv);
-	if (ft_check(argv, value) == -1)
-	{
-		free (value);
-		return (ft_error());
-	}
-	if (argc < 5)
-		printf("argc < 5\n");//small_sort(value);//a faire
-	else
-		radix_sort(value);//a faire
-	free (value);
+	// value = argtotab(argv);
+	// if (ft_check(argv, value) == -1)
+	// {
+	// 	free (value);
+	// 	return (ft_error());
+	// }
+
+	int str[] = {1, 2, 3};
+	int str2[] = {4};
+	int **tab;
+	tab = pre_push(str, str2, 0);
+	printf("%d\n", tab[0][0]);
+	printf("%d\n", tab[1][1]);
+
+	// if (argc < 5)
+	// 	printf("argc < 5\n");//small_sort(value);//a faire
+	// else
+	// 	radix_sort(value);//a faire
+	// free (value);
 	return (0);
 }
 
