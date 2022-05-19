@@ -26,6 +26,31 @@ unsigned int	ft_strlen(const char *s)
 	return (i);
 }
 
+int	*ft_strjoin(int *s1, int *s2)
+{
+	int		*join;
+	int		i;
+	int		j;
+
+	j = 0;
+	i = 0;
+	join = malloc(sizeof(int) * (sizeof(s1) + sizeof(s2) + 1));
+	if (!join)
+		return (NULL);
+	while (s1 && s1[i])
+	{
+		join[i] = *(char *)(s1 + i);
+		i++;
+	}
+	while (s2[j])
+	{
+		join[i + j] = *(char *)(s2 + j);
+		j++;
+	}
+	free (s1);
+	return (join);
+}
+
 /* 
 0 : sa
 1 : sb
@@ -59,35 +84,39 @@ int	*swap(int *tab, int option)
 	tab[0] = tab[1];
 	tab[1] = swapper;
 	if (option == 0)
-		ft_putstr("sa");
+		ft_putstr("sa\n");
 	if (option == 1)
-		ft_putstr("sb");
+		ft_putstr("sb\n");
 	return (tab);
 }
 
-int	**push(int *gifter, int *receiver)
+int	**pushb(int *gifter, int *receiver)
 {
 	int		**tab;
 	int		i;
 
 	if (sizeof(gifter) == 0)
 		return (NULL);
-	tab = malloc(4);
-	tab[0] = malloc(sizeof(gifter) - 4);
-	tab[1] = malloc(sizeof(receiver) + 4);
+	tab = malloc(2);
+	tab[1] = malloc(4);
 	tab[1][0] = gifter[0];
-	i = 0;
-	while ((sizeof(receiver) - 4) > (i * 4))
-	{
-		tab[1][i + 1] = receiver[i];
-		i++;
-	}
-	i = 0;
-	while ((i * 4) < (sizeof(gifter) + 4))
-	{
-		tab[0][i] = gifter[i + 1];
-		i++;
-	}
+	tab[1] = ft_strjoin(tab[1], receiver);
+	tab[0] = gifter + 1;
+	return (tab);
+}
+
+int	**pusha(int *gifter, int *receiver)
+{
+	int		**tab;
+	int		i;
+
+	if (sizeof(gifter) == 0)
+		return (NULL);
+	tab = malloc(2);
+	tab[0] = malloc(4);
+	tab[0][0] = gifter[0];
+	tab[0] = ft_strjoin(tab[0], receiver);
+	tab[1] = gifter + 1;
 	return (tab);
 }
 
@@ -161,11 +190,16 @@ int	**pre_push(int *giver, int *receiver, int nb)
 {
 	int		**tab;
 
-	tab = push(giver, receiver);
 	if (nb == 0)
+	{
+		tab = pusha(giver, receiver);
 		ft_putstr("pa\n");
+	}
 	else if (nb == 1)
+	{
+		tab = pushb(giver, receiver);
 		ft_putstr("pb\n");
+	}
 	return (tab);
 }
 
@@ -269,31 +303,6 @@ int	ft_intlen(int *str)
 	while (str[i])
 		i++;
 	return (i);
-}
-
-int	*ft_strjoin(int *s1, int *s2)
-{
-	int		*join;
-	int		i;
-	int		j;
-
-	j = 0;
-	i = 0;
-	join = malloc(sizeof(int) * (sizeof(s1) + sizeof(s2) + 1));
-	if (!join)
-		return (NULL);
-	while (s1 && s1[i])
-	{
-		join[i] = *(char *)(s1 + i);
-		i++;
-	}
-	while (s2[j])
-	{
-		join[i + j] = *(char *)(s2 + j);
-		j++;
-	}
-	free (s1);
-	return (join);
 }
 
 int	*argtotab(char **argv)// probleme avec dernier nbr
@@ -432,9 +441,24 @@ int	*order(int *stacka)
 int	ft_bigbit(int *stack)
 {
 	int		i;
+	int		j;
+	int		ret;
 
 	i = 0;
-	
+	j = 0;
+	while (i < (sizeof(stack) / 4))
+	{
+		if (stack[i] > j)
+			j = stack[i];
+		i++;
+	}
+	ret = 1;
+	while (j > 0)
+	{
+		j /= 2;
+		ret++;
+	}
+	return (ret);
 }
 
 void	radix_sort(int *value)
@@ -460,11 +484,18 @@ void	radix_sort(int *value)
 			i++;
 		}
 		j = 0;
-		while (ret[1][j])// remet dans stacka
+		while ((sizeof(ret[1]) / 4) > j)// remet dans stacka
 		{
 			ret = pre_push(ret[1], ret[0], 0);
 			j++;
 		}
+		bitpush++;
+	}
+	int f = 0;
+	while ((sizeof(ret[0]) / 4) > f)
+	{
+		printf("%d\n", ret[0][f]);
+		f++;
 	}
 }
 
@@ -486,9 +517,15 @@ int main(int argc, char **argv)
 	tab = malloc(2);
 	tab[0] = str;
 	tab[1] = str2;
-	tab = pre_rev_rotate(tab, 0);
-	printf("%d\n", tab[0][1]);
-	printf("%d\n", tab[0][2]);
+	tab = pre_push(tab[1], tab[0], 0);
+	int i = 0;
+	while (i < 4)
+	{
+		printf("%d\n", tab[0][i]);
+		i++;
+	}
+	// printf("%d\n", tab[1][0]);
+	// printf("%d\n", tab[0][1]);
 
 	// if (argc < 5)
 	// 	printf("argc < 5\n");//small_sort(value);//a faire
