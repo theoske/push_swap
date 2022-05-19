@@ -300,7 +300,7 @@ int	*ft_strjoin(int *s1, int *s2)
 	return (join);
 }
 
-int	*argtotab(char **argv)// probleme
+int	*argtotab(char **argv)// probleme avec dernier nbr
 {
 	int		i;
 	int		*tab;
@@ -311,7 +311,7 @@ int	*argtotab(char **argv)// probleme
 	while (argv[i])
 	{
 		tab2 = tab;
-		tab = malloc(sizeof(int) * i);
+		tab = malloc(sizeof(tab) + 4);
 		tab[i - 1] = ft_atoi(argv[i]);
 		tab = ft_strjoin(tab2, tab + i - 1);
 		i++;
@@ -391,11 +391,8 @@ int	lim_check(int *value)
 	return (0);
 }
 
-int	ft_check(char **argv)
+int	ft_check(char **argv, int *value)
 {
-	int	*value;
-
-	value = argtotab(argv);
 	if (nbr_check(argv) == -1)
 		return (-1);
 	if (lim_check(value) == -1)
@@ -453,10 +450,10 @@ int main(int argc, char **argv)
 {
 	int		*value;
 
-	if (ft_check(argv) == -1)
-		return (ft_error());
 	value = argtotab(argv);
-	int i =0;
+	if (ft_check(argv, value) == -1)
+		return (ft_error());
+	int i = 0;
 	while (value[i])
 	{
 		printf("%d\n", value[i]);
