@@ -429,6 +429,14 @@ int	*order(int *stacka)
 	return (nbr);
 }
 
+int	ft_bigbit(int *stack)
+{
+	int		i;
+
+	i = 0;
+	
+}
+
 void	radix_sort(int *value)
 {
 	int		i;
@@ -440,21 +448,23 @@ void	radix_sort(int *value)
 	stack[0] = order(value);
 	stack[1] = malloc(sizeof(stack[0]));
 	bitpush = 0;
-	while ()// trier de lunite a la centaine
-	i = 0;
-	while (i < (sizeof(value) / 4))// trie 1 bit
+	while (bitpush <= ft_bigbit(stack[0]))// trier de lunite a la centaine
 	{
-		if ((stack[0][i] >> bitpush % 2) == 0)
-			ret = pre_push(stack[0], stack[1], 1);
-		else
-			ret = pre_rotate(stack, 0);
-		i++;
-	}
-	j = 0;
-	while (ret[1][j])// remet dans stacka
-	{
-		ret = pre_push(ret[1], ret[0], 0);
-		j++;
+		i = 0;
+		while (i < (sizeof(value) / 4))// trie 1 bit
+		{
+			if ((stack[0][i] >> bitpush % 2) == 0)
+				ret = pre_push(stack[0], stack[1], 1);
+			else
+				ret = pre_rotate(stack, 0);
+			i++;
+		}
+		j = 0;
+		while (ret[1][j])// remet dans stacka
+		{
+			ret = pre_push(ret[1], ret[0], 0);
+			j++;
+		}
 	}
 }
 
