@@ -49,18 +49,18 @@ void	ft_putstr(char *str)
 1 : sb
 2 : ss
 */
-char	*swap(char *tab, int doprint)
+int	*swap(int *tab, int option)
 {
 	int		swapper;
 
-	if (ft_strlen(tab) <= 1)
+	if ((sizeof(tab) / 4) <= 1)
 		return (tab);
 	swapper = tab[0];
 	tab[0] = tab[1];
 	tab[1] = swapper;
-	if (doprint == 0)
+	if (option == 0)
 		ft_putstr("sa");
-	if (doprint == 1)
+	if (option == 1)
 		ft_putstr("sb");
 	return (tab);
 }
@@ -91,17 +91,17 @@ int	**push(int *gifter, int *receiver)
 	return (tab);
 }
 
-char	*rotate(char *str)
+int	*rotate(int *str)
 {
 	int		i;
-	char	swapper;
-	char	swapper2;
-	char	endchar;
+	int		swapper;
+	int		swapper2;
+	int		endchar;
 
-	if (!str)
+	if (sizeof(str) == 0)
 		return (NULL);
 	endchar = str[0];
-	i = ft_strlen(str) - 1;
+	i = (sizeof(str) / 4);
 	swapper = str[i];
 	while (i >= 0)
 	{
@@ -115,41 +115,39 @@ char	*rotate(char *str)
 			i--;
 		}
 	}
-	str[ft_strlen(str)] = 0;
-	str[ft_strlen(str) - 1] = endchar;
+	str[sizeof(str) / 4] = endchar;
 	return (str);
 }
 
-char	*rev_rotate(char *str)
+int	*rev_rotate(int *str)
 {
 	int		i;
-	char	swapper;
-	char	swapper2;
-	char	startchar;
+	int		swapper;
+	int		swapper2;
+	int		startchar;
 
-	if (!str)
+	if (sizeof(str) == 0)
 		return (NULL);
-	startchar = str[ft_strlen(str) - 1];
+	startchar = str[sizeof(str) / 4];
 	i = 0;
 	swapper = str[i];
-	while (str[i])
+	while ((i * 4) <= sizeof(str))
 	{
 		swapper2 = str[i];
 		str[i] = swapper;
 		i++;
-		if (str[i])
+		if ((i * 4) <= sizeof(str))
 		{
 			swapper = str[i];
 			str[i] = swapper2;
 			i++;
 		}
 	}
-	str[i] = 0;
 	str[0] = startchar;
 	return (str);
 }
 
-char	**double_swap(char **tab)
+int	**double_swap(int **tab)
 {
 	tab[0] = swap(tab[0], 2);
 	tab[1] = swap(tab[1], 2);
@@ -175,7 +173,7 @@ int	**pre_push(int *giver, int *receiver, int nb)
  1 rb
  2 rr
 */
-char	**pre_rotate(char **tab, int option)
+int	**pre_rotate(int **tab, int option)
 {
 	if (option == 0)
 	{
@@ -200,7 +198,7 @@ char	**pre_rotate(char **tab, int option)
  1 rrb
  2 rrr
 */
-char	**pre_rev_rotate(char **tab, int option)
+int	**pre_rev_rotate(int **tab, int option)
 {
 	if (option == 0)
 	{
@@ -218,7 +216,7 @@ char	**pre_rev_rotate(char **tab, int option)
 		tab[1] = rev_rotate(tab[1]);
 		ft_putstr("rrr\n");
 	}
-	return(tab);
+	return (tab);
 }
 
 int	ft_finder(const char *nptr)
@@ -465,9 +463,12 @@ int main(int argc, char **argv)
 	int str[] = {1, 2, 3};
 	int str2[] = {4};
 	int **tab;
-	tab = pre_push(str, str2, 0);
-	printf("%d\n", tab[0][0]);
-	printf("%d\n", tab[1][1]);
+	tab = malloc(2);
+	tab[0] = str;
+	tab[1] = str2;
+	tab = pre_rev_rotate(tab, 0);
+	printf("%d\n", tab[0][1]);
+	printf("%d\n", tab[0][2]);
 
 	// if (argc < 5)
 	// 	printf("argc < 5\n");//small_sort(value);//a faire
