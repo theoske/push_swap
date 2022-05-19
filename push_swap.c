@@ -433,34 +433,28 @@ int	*order(int *stacka)
 	return (nbr);
 }
 
-void	radix_sort(int *stacka)
+void	radix_sort(int *value)
 {
 	int		i;
-	int		*nbr;
+	int		*index;
 
-	i = 0;
-	// while (stacka[i])
-	// {
-	// 	printf("%d\n", stacka[i]);
-	// 	i++;
-	// }
+	index = order(value);
+
 }
-//pb argtotab
+
 int main(int argc, char **argv)
 {
 	int		*value;
+	int		*index;
 
 	value = argtotab(argv);
 	if (ft_check(argv, value) == -1)
-		return (ft_error());
-	int i = 0;
-	while (value[i])
 	{
-		printf("%d\n", value[i]);
-		i++;
+		free (value);
+		return (ft_error());
 	}
 	if (argc < 5)
-		printf("panon");//small_sort(value);//a faire
+		printf("argc < 5\n");//small_sort(value);//a faire
 	else
 		radix_sort(value);//a faire
 	free (value);
