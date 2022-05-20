@@ -29,12 +29,37 @@ unsigned int	ft_strlen(const char *s)
 int	*ft_strjoin(int *s1, int *s2)
 {
 	int		*join;
+	int		j;
+	int		i;
+
+	j = 0;
+	i = 0;
+	join = malloc(sizeof(s1) + sizeof(s2));
+	if (!join)
+		return (NULL);
+	while (j < (sizeof(s1) / 4))
+	{
+		join[j] = s1[j];
+		j++;
+	}
+	while (s2 && s2[i] && join[i + j])
+	{
+		join[i + j] = s2[i];
+		i++;
+	}
+	free (s1);
+	return (join);
+}
+
+char	*ft_strjoinchar(char *s1, char *s2)
+{
+	char	*join;
 	int		i;
 	int		j;
 
 	j = 0;
 	i = 0;
-	join = malloc(sizeof(int) * (sizeof(s1) + sizeof(s2) + 1));
+	join = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!join)
 		return (NULL);
 	while (s1 && s1[i])
@@ -47,7 +72,8 @@ int	*ft_strjoin(int *s1, int *s2)
 		join[i + j] = *(char *)(s2 + j);
 		j++;
 	}
-	free (s1);
+	join[i + j] = '\0';
+	free(s1);
 	return (join);
 }
 
@@ -195,7 +221,7 @@ int	**pre_push(int *giver, int *receiver, int nb)
 		tab = pusha(giver, receiver);
 		ft_putstr("pa\n");
 	}
-	else if (nb == 1)
+	else
 	{
 		tab = pushb(giver, receiver);
 		ft_putstr("pb\n");
@@ -305,20 +331,17 @@ int	ft_intlen(int *str)
 	return (i);
 }
 
-int	*argtotab(char **argv)// probleme avec dernier nbr
+int	*argtotab(char **argv)
 {
 	int		i;
 	int		*tab;
-	int		*tab2;
 
 	i = 1;
 	tab = NULL;
+	tab = malloc((ft_strlen(argv) - 1) * 4);
 	while (argv[i])
 	{
-		tab2 = tab;
-		tab = malloc(sizeof(tab) + 4);
 		tab[i - 1] = ft_atoi(argv[i]);
-		tab = ft_strjoin(tab2, tab + i - 1);
 		i++;
 	}
 	return (tab);
@@ -415,7 +438,7 @@ int	ft_error(void)
 	return (-1);
 }
 
-int	*order(int *stacka)
+int	*order(int *stacka, int argc)//pb
 {
 	int		i;
 	int		j;
@@ -423,11 +446,11 @@ int	*order(int *stacka)
 
 	i = 0;
 	nbr = malloc(sizeof(stacka));
-	while (stacka[i])
+	while (i < argc)
 	{
 		j = 0;
 		nbr[i] = 0;
-		while (stacka[j])
+		while (j < argc)
 		{
 			if (stacka[i] > stacka[j])
 				nbr[i]++;
@@ -461,7 +484,7 @@ int	ft_bigbit(int *stack)
 	return (ret);
 }
 
-void	radix_sort(int *value)
+void	radix_sort(int *value, int argc)
 {
 	int		i;
 	int		j;
@@ -469,35 +492,36 @@ void	radix_sort(int *value)
 	int		**ret;
 	int		bitpush;
 	int		bigbit;
+	int		pacount;
 
-	stack[0] = order(value);//fonctionne
+	stack[0] = order(value, argc);//fonctionne
 	stack[1] = malloc(sizeof(stack[0]));
+	ret = stack;
 	bitpush = 0;
 	bigbit = ft_bigbit(stack[0]);
+	int f = 0;
 	while (bitpush <= bigbit)// trier de lunite a la centaine// marche pas
 	{
 		i = 0;
-		while (i <= (sizeof(value) / 4))// trie 1 bit
+		pacount = 0;
+		while (i <= argc)// trie 1 bit
 		{
-			if (((stack[0][i] >> bitpush) & 1) == 0)
-				ret = pre_push(stack[0], stack[1], 1);
+			if (((ret[0][0] >> bitpush) & 1) == 0)
+			{
+				ret = pre_push(ret[0], ret[1], 1);
+				pacount++;
+			}
 			else
-				ret = pre_rotate(stack, 0);
+				ret = pre_rotate(ret, 0);
 			i++;
 		}
 		j = 0;
-		while ((sizeof(ret[1]) / 4) >= j)// remet dans stacka
+		while (pacount > j)// remet dans stacka
 		{
 			ret = pre_push(ret[1], ret[0], 0);
 			j++;
 		}
 		bitpush++;
-	}
-	int f = 0;
-	while (6 > f)
-	{
-		printf("%d\n", ret[0][f]);
-		f++;
 	}
 }
 
@@ -507,6 +531,12 @@ int main(int argc, char **argv)
 	int		*index;
 
 	value = argtotab(argv);
+	int i = 0;
+	while (i < 6)
+	{
+		printf("%d a\n", value[i]);
+		i++;
+	}
 	if (ft_check(argv, value) == -1)
 	{
 		free (value);
@@ -532,7 +562,7 @@ int main(int argc, char **argv)
 	if (argc < 5)
 		printf("argc < 5\n");//small_sort(value);//a faire
 	else
-		radix_sort(value);//a faire
+		radix_sort(value, argc - 1);//a faire
 	free (value);
 	return (0);
 }
