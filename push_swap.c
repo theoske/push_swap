@@ -468,23 +468,25 @@ void	radix_sort(int *value)
 	int		*stack[2];
 	int		**ret;
 	int		bitpush;
+	int		bigbit;
 
-	stack[0] = order(value);
+	stack[0] = order(value);//fonctionne
 	stack[1] = malloc(sizeof(stack[0]));
 	bitpush = 0;
-	while (bitpush <= ft_bigbit(stack[0]))// trier de lunite a la centaine
+	bigbit = ft_bigbit(stack[0]);
+	while (bitpush <= bigbit)// trier de lunite a la centaine// marche pas
 	{
 		i = 0;
-		while (i < (sizeof(value) / 4))// trie 1 bit
+		while (i <= (sizeof(value) / 4))// trie 1 bit
 		{
-			if ((stack[0][i] >> bitpush % 2) == 0)
+			if (((stack[0][i] >> bitpush) & 1) == 0)
 				ret = pre_push(stack[0], stack[1], 1);
 			else
 				ret = pre_rotate(stack, 0);
 			i++;
 		}
 		j = 0;
-		while ((sizeof(ret[1]) / 4) > j)// remet dans stacka
+		while ((sizeof(ret[1]) / 4) >= j)// remet dans stacka
 		{
 			ret = pre_push(ret[1], ret[0], 0);
 			j++;
@@ -492,7 +494,7 @@ void	radix_sort(int *value)
 		bitpush++;
 	}
 	int f = 0;
-	while ((sizeof(ret[0]) / 4) > f)
+	while (6 > f)
 	{
 		printf("%d\n", ret[0][f]);
 		f++;
@@ -501,37 +503,37 @@ void	radix_sort(int *value)
 
 int main(int argc, char **argv)
 {
-	// int		*value;
-	// int		*index;
+	int		*value;
+	int		*index;
 
-	// value = argtotab(argv);
-	// if (ft_check(argv, value) == -1)
-	// {
-	// 	free (value);
-	// 	return (ft_error());
-	// }
-
-	int str[] = {1, 2, 3};
-	int str2[] = {4};
-	int **tab;
-	tab = malloc(2);
-	tab[0] = str;
-	tab[1] = str2;
-	tab = pre_push(tab[1], tab[0], 0);
-	int i = 0;
-	while (i < 4)
+	value = argtotab(argv);
+	if (ft_check(argv, value) == -1)
 	{
-		printf("%d\n", tab[0][i]);
-		i++;
+		free (value);
+		return (ft_error());
 	}
+
+	// int str[] = {1, 2, 3};
+	// int str2[] = {4};
+	// int **tab;
+	// tab = malloc(2);
+	// tab[0] = str;
+	// tab[1] = str2;
+	// tab = pre_push(tab[1], tab[0], 0);
+	// int i = 0;
+	// while (i < 4)
+	// {
+	// 	printf("%d\n", tab[0][i]);
+	// 	i++;
+	// }
 	// printf("%d\n", tab[1][0]);
 	// printf("%d\n", tab[0][1]);
 
-	// if (argc < 5)
-	// 	printf("argc < 5\n");//small_sort(value);//a faire
-	// else
-	// 	radix_sort(value);//a faire
-	// free (value);
+	if (argc < 5)
+		printf("argc < 5\n");//small_sort(value);//a faire
+	else
+		radix_sort(value);//a faire
+	free (value);
 	return (0);
 }
 
