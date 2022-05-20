@@ -499,20 +499,19 @@ void	radix_sort(int *value, int argc)
 	ret = stack;
 	bitpush = 0;
 	bigbit = ft_bigbit(stack[0]);
-	int f = 0;
 	while (bitpush <= bigbit)// trier de lunite a la centaine// marche pas
 	{
 		i = 0;
 		pacount = 0;
-		while (i <= argc)// trie 1 bit
+		while (i <= (argc - 1))// trie 1 bit
 		{
-			if (((ret[0][0] >> bitpush) & 1) == 0)
+			if (((ret[0][0] >> bitpush) & 1) == 1)
+				ret = pre_rotate(ret, 0);
+			else
 			{
 				ret = pre_push(ret[0], ret[1], 1);
 				pacount++;
 			}
-			else
-				ret = pre_rotate(ret, 0);
 			i++;
 		}
 		j = 0;
@@ -523,6 +522,12 @@ void	radix_sort(int *value, int argc)
 		}
 		bitpush++;
 	}
+	int f = 0;
+	while (f < 6)
+	{
+		printf("%d a\n", ret[0][f]);
+		f++;
+	}
 }
 
 int main(int argc, char **argv)
@@ -530,13 +535,7 @@ int main(int argc, char **argv)
 	int		*value;
 	int		*index;
 
-	value = argtotab(argv);
-	int i = 0;
-	while (i < 6)
-	{
-		printf("%d a\n", value[i]);
-		i++;
-	}
+	value = argtotab(argv);//fonctionne
 	if (ft_check(argv, value) == -1)
 	{
 		free (value);
@@ -562,7 +561,7 @@ int main(int argc, char **argv)
 	if (argc < 5)
 		printf("argc < 5\n");//small_sort(value);//a faire
 	else
-		radix_sort(value, argc - 1);//a faire
+		radix_sort(value, argc - 1);//pb
 	free (value);
 	return (0);
 }
