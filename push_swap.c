@@ -131,7 +131,7 @@ int	**pushb(int *gifter, int *receiver)
 	return (tab);
 }
 
-int	**pusha(int *gifter, int *receiver)
+int	**pusha(int *gifter, int *receiver)//pb
 {
 	int		**tab;
 	int		i;
@@ -139,10 +139,11 @@ int	**pusha(int *gifter, int *receiver)
 	if (sizeof(gifter) == 0)
 		return (NULL);
 	tab = malloc(2);
-	tab[0] = malloc(4);
+	tab[0] = malloc(sizeof(receiver) + 4);
 	tab[0][0] = gifter[0];
 	tab[0] = ft_strjoin(tab[0], receiver);
 	tab[1] = gifter + 1;
+
 	return (tab);
 }
 
@@ -156,9 +157,9 @@ int	*rotate(int *str)
 	if (sizeof(str) == 0)
 		return (NULL);
 	endchar = str[0];
-	i = (sizeof(str) / 4);
+	i = ((sizeof(str) / 4) + 1);
 	swapper = str[i];
-	while (i >= 0)
+	while (i > 0)
 	{
 		swapper2 = str[i];
 		str[i] = swapper;
@@ -170,7 +171,7 @@ int	*rotate(int *str)
 			i--;
 		}
 	}
-	str[sizeof(str) / 4] = endchar;
+	str[(sizeof(str) / 4) + 1] = endchar;
 	return (str);
 }
 
@@ -519,7 +520,7 @@ void	radix_sort(int *value, int argc)
 				ret = pre_push(ret[0], ret[1], 1);
 				pacount++;
 			}
-			i++;
+			i++;			
 		}
 		f = 0;
 		while (f < 6)
