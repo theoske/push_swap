@@ -499,12 +499,19 @@ void	radix_sort(int *value, int argc)
 	ret = stack;
 	bitpush = 0;
 	bigbit = ft_bigbit(stack[0]);
+	int f = 0;
+	while (f < 6)
+	{
+		printf("%d o\n", stack[0][f]);
+		f++;
+	}
 	while (bitpush <= bigbit)// trier de lunite a la centaine// marche pas
 	{
 		i = 0;
 		pacount = 0;
-		while (i <= (argc - 1))// trie 1 bit
+		while (i < argc)// trie 1 bit
 		{
+			printf("ee  %d\n", ret[0][0]);
 			if (((ret[0][0] >> bitpush) & 1) == 1)
 				ret = pre_rotate(ret, 0);
 			else
@@ -514,6 +521,12 @@ void	radix_sort(int *value, int argc)
 			}
 			i++;
 		}
+		f = 0;
+		while (f < 6)
+		{
+			printf("%d a\n", ret[1][f]);
+			f++;
+		}
 		j = 0;
 		while (pacount > j)// remet dans stacka
 		{
@@ -522,12 +535,7 @@ void	radix_sort(int *value, int argc)
 		}
 		bitpush++;
 	}
-	int f = 0;
-	while (f < 6)
-	{
-		printf("%d a\n", ret[0][f]);
-		f++;
-	}
+	
 }
 
 int main(int argc, char **argv)
