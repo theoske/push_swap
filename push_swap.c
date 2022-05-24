@@ -123,7 +123,7 @@ int	**pushb(int *gifter, int *receiver)//pb
 
 	if (sizeof(gifter) == 0)
 		return (NULL);
-	tab = malloc(8);
+	tab = malloc(sizeof(int *) * 2);
 	tab[1] = malloc(sizeof(receiver) + 4);
 	tab[1][0] = gifter[0];
 	i = 0;
@@ -143,12 +143,11 @@ int	**pusha(int *gifter, int *receiver)
 
 	if (sizeof(gifter) == 0)
 		return (NULL);
-	tab = malloc(8);
-	tab[1] = NULL;
+	tab = malloc(sizeof(int *) * 2);
 	tab[0] = malloc(sizeof(receiver) + 4);
-	tab[0][0] = gifter[0];
 	i = 0;
-	while (sizeof(receiver) > (i * 4))
+	tab[0][0] = gifter[0];
+	while (sizeof(receiver) > (i * sizeof(int)))
 	{
 		tab[0][i + 1] = receiver[i];
 		i++;
@@ -533,16 +532,16 @@ void	radix_sort(int *value, int argc)
 			i++;
 		}
 		f = 0;
-		while ((f * 4) <= sizeof(ret[1]))//
+		while ((f * 4) <= sizeof(ret[0]))//
 		{
-			printf("%d a\n", ret[1][f]);
+			printf("%d a\n", ret[0][f]);
 			f++;
 		}
 		j = 0;
 		while (pacount > j++)// remet dans stacka
 			ret = pre_push(ret[1], ret[0], 0);
 		f = 0;
-		while ((f * 4) <= sizeof(ret[0]))//
+		while (f < 6)//
 		{
 			printf("%d afterpush\n", ret[0][f]);
 			f++;
