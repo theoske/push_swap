@@ -42,7 +42,7 @@ int	*ft_strjoin(int *s1, int *s2)
 		join[j] = s1[j];
 		j++;
 	}
-	while (s2 && s2[i] && join[i + j])
+	while (s2 && i < (sizeof(s2) / 4) && (sizeof(join) / 4) > (i + j))
 	{
 		join[i + j] = s2[i];
 		i++;
@@ -116,7 +116,7 @@ int	*swap(int *tab, int option)
 	return (tab);
 }
 
-int	**pushb(int *gifter, int *receiver)
+int	**pushb(int *gifter, int *receiver)//pb
 {
 	int		**tab;
 	int		i;
@@ -124,14 +124,19 @@ int	**pushb(int *gifter, int *receiver)
 	if (sizeof(gifter) == 0)
 		return (NULL);
 	tab = malloc(2);
-	tab[1] = malloc(4);
+	tab[1] = malloc(sizeof(receiver) + 4);
 	tab[1][0] = gifter[0];
-	tab[1] = ft_strjoin(tab[1], receiver);
+	i = 0;
+	while (sizeof(receiver) > (i * 4))
+	{
+		tab[1][i + 1] = receiver[i];
+		i++;
+	}
 	tab[0] = gifter + 1;
 	return (tab);
 }
 
-int	**pusha(int *gifter, int *receiver)//pb
+int	**pusha(int *gifter, int *receiver)
 {
 	int		**tab;
 	int		i;
@@ -139,11 +144,16 @@ int	**pusha(int *gifter, int *receiver)//pb
 	if (sizeof(gifter) == 0)
 		return (NULL);
 	tab = malloc(2);
+	tab[1] = NULL;
 	tab[0] = malloc(sizeof(receiver) + 4);
 	tab[0][0] = gifter[0];
-	tab[0] = ft_strjoin(tab[0], receiver);
+	i = 0;
+	while (sizeof(receiver) > (i * 4))
+	{
+		tab[0][i + 1] = receiver[i];
+		i++;
+	}
 	tab[1] = gifter + 1;
-
 	return (tab);
 }
 
