@@ -145,11 +145,18 @@ int	**pusha(int *gifter, int *receiver)
 		return (NULL);
 	tab = malloc(sizeof(int *) * 2);
 	tab[0] = malloc(sizeof(receiver) + 4);
+	tab[1] = malloc(sizeof(gifter) - 4);
 	i = 0;
 	tab[0][0] = gifter[0];
-	while (sizeof(receiver) > (i * sizeof(int)))
+	while (sizeof(receiver) >= ((i + 1) * sizeof(int)))
 	{
 		tab[0][i + 1] = receiver[i];
+		i++;
+	}
+	i = 0;
+	while (sizeof(gifter) >= ((i + 1) * sizeof(int)))
+	{
+		tab[1][i] = gifter[i + 1];
 		i++;
 	}
 	tab[1] = gifter + 1;
@@ -159,56 +166,32 @@ int	**pusha(int *gifter, int *receiver)
 int	*rotate(int *str)
 {
 	int		i;
-	int		swapper;
-	int		swapper2;
-	int		endchar;
+	int		*tab;
 
-	if (sizeof(str) == 0)
-		return (NULL);
-	endchar = str[0];
-	i = ((sizeof(str) / 4) + 1);
-	swapper = str[i];
-	while (i > 0)
+	tab = malloc(sizeof(str));
+	i = 0;
+	while ((i * 4) <= sizeof(str))
 	{
-		swapper2 = str[i];
-		str[i] = swapper;
-		i--;
-		if (i >= 0)
-		{
-			swapper = str[i];
-			str[i] = swapper2;
-			i--;
-		}
+		tab[i] = str[i + 1];
+		i++;
 	}
-	str[(sizeof(str) / 4) + 1] = endchar;
-	return (str);
+	tab[i] = str[0];
+	return (tab);
 }
 
 int	*rev_rotate(int *str)
 {
 	int		i;
-	int		swapper;
-	int		swapper2;
-	int		startchar;
+	int		*tab;
 
-	if (sizeof(str) == 0)
-		return (NULL);
-	startchar = str[sizeof(str) / 4];
+	tab = malloc(sizeof(str));
 	i = 0;
-	swapper = str[i];
 	while ((i * 4) <= sizeof(str))
 	{
-		swapper2 = str[i];
-		str[i] = swapper;
+		tab[i + 1] = str[i];
 		i++;
-		if ((i * 4) <= sizeof(str))
-		{
-			swapper = str[i];
-			str[i] = swapper2;
-			i++;
-		}
 	}
-	str[0] = startchar;
+	tab[0] = str[i];
 	return (str);
 }
 
@@ -541,7 +524,7 @@ void	radix_sort(int *value, int argc)
 		while (pacount > j++)// remet dans stacka
 			ret = pre_push(ret[1], ret[0], 0);
 		f = 0;
-		while (f < 6)//
+		while ((f * 4) <= sizeof(ret[0]))//
 		{
 			printf("%d afterpush\n", ret[0][f]);
 			f++;
