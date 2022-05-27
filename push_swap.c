@@ -20,7 +20,7 @@ typedef struct s_element
 	t_element	*next;
 }	t_element;
 
-
+//structure de controle contenant le premier element de la liste
 typedef struct s_liste
 {
 	t_element	*first;
@@ -41,7 +41,8 @@ t_liste	*initialisation(void)
 	return (liste);
 }
 
-void	insertion(t_liste *liste, int newnbr)
+// empile un nouvel element a la liste
+void	insertlist(t_liste *liste, int newnbr)
 {
 	t_element	*new;
 
@@ -53,7 +54,7 @@ void	insertion(t_liste *liste, int newnbr)
 	liste->first = new;
 }
 
-void	remove(t_liste *liste)
+void	removelist(t_liste *liste)
 {
 	t_element	*todelete;
 
@@ -65,6 +66,24 @@ void	remove(t_liste *liste)
 		liste->first = liste->first->next;
 		free (todelete);
 	}
+}
+
+int	unpile(t_liste *liste)
+{
+	int			pilenbr;
+	t_element	*pileelement;
+
+	if (!liste)
+		exit(EXIT_FAILURE);
+	pilenbr = 0;
+	pileelement = liste->first;
+	if (liste != NULL && liste->first != NULL)
+	{
+		pilenbr = pileelement->nbr;
+		liste->first = pileelement->next;
+		free (pileelement);
+	}
+	return (pilenbr);
 }
 
 unsigned int	ft_strlen(const char *s)
