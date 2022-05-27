@@ -26,7 +26,7 @@ typedef struct s_liste
 	t_element	*first;
 }	t_liste;
 
-t_liste	*initialisation(void)
+t_liste	*listinit(void)
 {
 	t_liste		*liste;
 	t_element	*element;
@@ -643,6 +643,8 @@ int main(int argc, char **argv)
 {
 	int		*value;
 	int		*index;
+	t_liste	*stacka;
+	t_liste	*stackb;
 
 	value = argtotab(argv);//fonctionne
 	if (ft_check(argv, value) == -1)
@@ -650,7 +652,8 @@ int main(int argc, char **argv)
 		free (value);
 		return (ft_error());
 	}
-
+	stacka = listinit();
+	stackb = listinit();
 	// int str[] = {1, 2, 3};
 	// int str2[] = {4};
 	// int **tab;
