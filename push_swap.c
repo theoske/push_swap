@@ -14,6 +14,59 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+typedef struct s_element
+{
+	int			nbr;
+	t_element	*next;
+}	t_element;
+
+
+typedef struct s_liste
+{
+	t_element	*first;
+}	t_liste;
+
+t_liste	*initialisation(void)
+{
+	t_liste		*liste;
+	t_element	*element;
+
+	element = malloc(sizeof(*element));
+	liste = malloc(sizeof(*liste));
+	if (!liste || !element)
+		exit(EXIT_FAILURE);
+	element->nbr = 0;
+	element->next = NULL;
+	liste->first = element;
+	return (liste);
+}
+
+void	insertion(t_liste *liste, int newnbr)
+{
+	t_element	*new;
+
+	new = malloc(sizeof(*new));
+	if (!liste || !new)
+		exit(EXIT_FAILURE);
+	new->nbr = newnbr;
+	new->next = liste->first;
+	liste->first = new;
+}
+
+void	remove(t_liste *liste)
+{
+	t_element	*todelete;
+
+	if (!liste)
+		exit(EXIT_FAILURE);
+	if (liste->first != NULL)
+	{
+		todelete = liste->first;
+		liste->first = liste->first->next;
+		free (todelete);
+	}
+}
+
 unsigned int	ft_strlen(const char *s)
 {
 	unsigned int	i;
@@ -124,15 +177,21 @@ int	**pushb(int *gifter, int *receiver)//pb
 	if (sizeof(gifter) == 0)
 		return (NULL);
 	tab = malloc(sizeof(int *) * 2);
-	tab[1] = malloc(sizeof(receiver) + 4);
+	tab[1] = malloc(sizeof(receiver) + sizeof(int));
+	tab[0] = malloc(sizeof(gifter) - sizeof(int));
 	tab[1][0] = gifter[0];
 	i = 0;
-	while (sizeof(receiver) > (i * 4))
+	while (sizeof(receiver) >= (i * 4))
 	{
 		tab[1][i + 1] = receiver[i];
 		i++;
 	}
-	tab[0] = gifter + 1;
+	i = 0;
+	while ((sizeof(gifter) / 4) > i)
+	{
+		tab[0][i] = gifter[i + 1];
+		i++;
+	}
 	return (tab);
 }
 
@@ -145,53 +204,76 @@ int	**pusha(int *gifter, int *receiver)
 		return (NULL);
 	tab = malloc(sizeof(int *) * 2);
 	tab[0] = malloc(sizeof(receiver) + 4);
-	tab[1] = malloc(sizeof(gifter) - 4);
-	i = 0;
+	tab[1] = malloc(sizeof(gifter) - sizeof(int));
 	tab[0][0] = gifter[0];
-	while (sizeof(receiver) >= ((i + 1) * sizeof(int)))
+	i = 0;
+	while (sizeof(receiver) >= (i * 4))
 	{
 		tab[0][i + 1] = receiver[i];
 		i++;
 	}
 	i = 0;
-	while (sizeof(gifter) >= ((i + 1) * sizeof(int)))
+	while ((sizeof(gifter) / 4) > i)
 	{
 		tab[1][i] = gifter[i + 1];
 		i++;
 	}
-	tab[1] = gifter + 1;
 	return (tab);
 }
 
 int	*rotate(int *str)
 {
 	int		i;
-	int		*tab;
+	int		swapper;
+	int		swapper2;
+	int		endchar;
 
-	tab = malloc(sizeof(str));
-	i = 0;
-	while ((i * 4) <= sizeof(str))
+	if (sizeof(str) == 0)
+		return (NULL);
+	endchar = str[0];
+	i = ((sizeof(str) / 4) + 1);
+	swapper = str[i];
+	while (i > 0)
 	{
-		tab[i] = str[i + 1];
-		i++;
+		swapper2 = str[i];
+		str[i] = swapper;
+		i--;
+		if (i >= 0)
+		{
+			swapper = str[i];
+			str[i] = swapper2;
+			i--;
+		}
 	}
-	tab[i] = str[0];
-	return (tab);
+	str[(sizeof(str) / 4) + 1] = endchar;
+	return (str);
 }
 
 int	*rev_rotate(int *str)
 {
 	int		i;
-	int		*tab;
+	int		swapper;
+	int		swapper2;
+	int		startchar;
 
-	tab = malloc(sizeof(str));
+	if (sizeof(str) == 0)
+		return (NULL);
+	startchar = str[sizeof(str) / 4];
 	i = 0;
+	swapper = str[i];
 	while ((i * 4) <= sizeof(str))
 	{
-		tab[i + 1] = str[i];
+		swapper2 = str[i];
+		str[i] = swapper;
 		i++;
+		if ((i * 4) <= sizeof(str))
+		{
+			swapper = str[i];
+			str[i] = swapper2;
+			i++;
+		}
 	}
-	tab[0] = str[i];
+	str[0] = startchar;
 	return (str);
 }
 
@@ -521,8 +603,11 @@ void	radix_sort(int *value, int argc)
 			f++;
 		}
 		j = 0;
-		while (pacount > j++)// remet dans stacka
+		while (pacount > j)// remet dans stacka
+		{
 			ret = pre_push(ret[1], ret[0], 0);
+			j++;
+		}
 		f = 0;
 		while ((f * 4) <= sizeof(ret[0]))//
 		{
@@ -531,7 +616,8 @@ void	radix_sort(int *value, int argc)
 		}
 		bitpush++;
 	}
-	
+	free(stack[0]);
+	free(stack[1]);
 }
 
 int main(int argc, char **argv)
