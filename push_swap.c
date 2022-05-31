@@ -156,22 +156,22 @@ t_liste	*rotate(t_liste *stack)
 
 // 0 a_push
 // 1 b_push
-// int	**pre_push(int *giver, int *receiver, int nb)
-// {
-// 	int		**tab;
+int	**pre_push(int *giver, int *receiver, int nb)
+{
+	int		**tab;
 
-// 	if (nb == 0)
-// 	{
-// 		tab = pusha(giver, receiver);
-// 		ft_putstr("pa\n");
-// 	}
-// 	else
-// 	{
-// 		tab = pushb(giver, receiver);
-// 		ft_putstr("pb\n");
-// 	}
-// 	return (tab);
-// }
+	if (nb == 0)
+	{
+		tab = pusha(giver, receiver);
+		ft_putstr("pa\n");
+	}
+	else
+	{
+		tab = pushb(giver, receiver);
+		ft_putstr("pb\n");
+	}
+	return (tab);
+}
 
 /* 0 ra
  1 rb
@@ -465,9 +465,9 @@ void	radix_sort(t_liste *stacka, int argc)
 		{
 			nbr = stacka->first->nbr;
 			if ((nbr >> i) & 1)
-				pre_rotate(stacka, 0);
+				stacka = pre_rotate(stacka, 0);
 			else
-				pre_push(stacka, stackb, 1);
+				pre_push(stacka, stackb, 1);//a faire trouver comment modifier a et b en une seule f. avec tableau sur 2 adresses?
 		}
 		while (stackb->first)
 			pre_push(stackb, stacka, 0);
@@ -488,7 +488,7 @@ t_liste	*valuetoliste(int *value, int argc)
 	}
 	return (stacka);
 }
-
+//liste deux cases trop grandes
 int main(int argc, char **argv)
 {
 	int		*value;
