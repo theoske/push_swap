@@ -452,10 +452,9 @@ t_liste	*listcpy(t_liste *stacka)
 	cpy = listinit();
 	ptr = stacka->first;
 	i = 0;
-	while (ptr)
+	while (ptr->next->next)
 	{
 		nbr = ptr->nbr;
-		printf("%d a\n", nbr);
 		insertlist(cpy, nbr);
 		ptr = ptr->next;
 	}
@@ -476,16 +475,16 @@ int	stacka_sorted(t_liste *stacka, int argc)
 		value[i] = unpile(stacktest);
 		i++;
 	}
-	i = 0;
-	while (i < argc)
+	i--;
+	while (i >= 0)
 	{
-		if (value[i] > value[i + 1])
+		if (value[i] < value[i + 1])
 		{
 			free (value);
 			removelist(stacktest);
 			return (0);
 		}
-		i++;
+		i--;
 	}
 	removelist(stacktest);
 	free (value);
