@@ -461,7 +461,7 @@ t_liste	*listcpy(t_liste *stacka)
 	return (cpy);
 }
 
-int	stacka_sorted(t_liste *stacka, int argc)
+int	stack_sorted(t_liste *stacka, int argc)
 {
 	int		i;
 	int		*value;
@@ -488,7 +488,7 @@ int	stacka_sorted(t_liste *stacka, int argc)
 	}
 	removelist(stacktest);
 	free (value);
-	return (-1);
+	return (1);
 }
 
 int	a_sorted(int *value)
@@ -629,9 +629,24 @@ int	ft_bigbit(int *stack)
 void	radix_sort(t_liste *stacka, int argc)
 {
 	int		i;
+	int		nbr;
+	t_liste	*stackb;
 
-	i = 0;
-	stacka_sorted(stacka, argc);
+	stackb = listinit();
+	while (!stack_sorted(stacka, argc))
+	{
+		i = 0;
+		while (i < (argc - 1))
+		{
+			nbr = stacka->first->nbr;
+			if ((nbr >> i) & 1)
+				pre_rotate(stacka, 0);
+			else
+				pre_push(stacka, stackb, 1);
+		}
+		while (stackb)
+			pre_push(stackb, stacka, 1);
+	}
 }
 
 t_liste	*valuetoliste(int *value, int argc)
