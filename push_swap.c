@@ -99,57 +99,6 @@ unsigned int	ft_strlen(const char *s)
 	return (i);
 }
 
-int	*ft_strjoin(int *s1, int *s2)
-{
-	int		*join;
-	int		j;
-	int		i;
-
-	j = 0;
-	i = 0;
-	join = malloc(sizeof(s1) + sizeof(s2));
-	if (!join)
-		return (NULL);
-	while (j < (sizeof(s1) / 4))
-	{
-		join[j] = s1[j];
-		j++;
-	}
-	while (s2 && i < (sizeof(s2) / 4) && (sizeof(join) / 4) > (i + j))
-	{
-		join[i + j] = s2[i];
-		i++;
-	}
-	free (s1);
-	return (join);
-}
-
-char	*ft_strjoinchar(char *s1, char *s2)
-{
-	char	*join;
-	int		i;
-	int		j;
-
-	j = 0;
-	i = 0;
-	join = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!join)
-		return (NULL);
-	while (s1 && s1[i])
-	{
-		join[i] = *(char *)(s1 + i);
-		i++;
-	}
-	while (s2[j])
-	{
-		join[i + j] = *(char *)(s2 + j);
-		j++;
-	}
-	join[i + j] = '\0';
-	free(s1);
-	return (join);
-}
-
 /* 
 0 : sa
 1 : sb
@@ -189,189 +138,58 @@ int	*swap(int *tab, int option)
 	return (tab);
 }
 
-int	**pushb(int *gifter, int *receiver)//pb
+t_liste	*rotate(t_liste *stack)
 {
-	int		**tab;
-	int		i;
+	int			nbr1;
+	t_element	*ptr;
 
-	if (sizeof(gifter) == 0)
-		return (NULL);
-	tab = malloc(sizeof(int *) * 2);
-	tab[1] = malloc(sizeof(receiver) + sizeof(int));
-	tab[0] = malloc(sizeof(gifter) - sizeof(int));
-	tab[1][0] = gifter[0];
-	i = 0;
-	while (sizeof(receiver) >= (i * 4))
+	nbr1 = stack->first->nbr;
+	ptr = stack->first;
+	while (ptr->next->next->next)
 	{
-		tab[1][i + 1] = receiver[i];
-		i++;
+		ptr->nbr = ptr->next->nbr;
+		ptr = ptr->next;
 	}
-	i = 0;
-	while ((sizeof(gifter) / 4) > i)
-	{
-		tab[0][i] = gifter[i + 1];
-		i++;
-	}
-	return (tab);
-}
-
-int	**pusha(int *gifter, int *receiver)
-{
-	int		**tab;
-	int		i;
-
-	if (sizeof(gifter) == 0)
-		return (NULL);
-	tab = malloc(sizeof(int *) * 2);
-	tab[0] = malloc(sizeof(receiver) + 4);
-	tab[1] = malloc(sizeof(gifter) - sizeof(int));
-	tab[0][0] = gifter[0];
-	i = 0;
-	while (sizeof(receiver) >= (i * 4))
-	{
-		tab[0][i + 1] = receiver[i];
-		i++;
-	}
-	i = 0;
-	while ((sizeof(gifter) / 4) > i)
-	{
-		tab[1][i] = gifter[i + 1];
-		i++;
-	}
-	return (tab);
-}
-
-int	*rotate(int *str)
-{
-	int		i;
-	int		swapper;
-	int		swapper2;
-	int		endchar;
-
-	if (sizeof(str) == 0)
-		return (NULL);
-	endchar = str[0];
-	i = ((sizeof(str) / 4) + 1);
-	swapper = str[i];
-	while (i > 0)
-	{
-		swapper2 = str[i];
-		str[i] = swapper;
-		i--;
-		if (i >= 0)
-		{
-			swapper = str[i];
-			str[i] = swapper2;
-			i--;
-		}
-	}
-	str[(sizeof(str) / 4) + 1] = endchar;
-	return (str);
-}
-
-int	*rev_rotate(int *str)
-{
-	int		i;
-	int		swapper;
-	int		swapper2;
-	int		startchar;
-
-	if (sizeof(str) == 0)
-		return (NULL);
-	startchar = str[sizeof(str) / 4];
-	i = 0;
-	swapper = str[i];
-	while ((i * 4) <= sizeof(str))
-	{
-		swapper2 = str[i];
-		str[i] = swapper;
-		i++;
-		if ((i * 4) <= sizeof(str))
-		{
-			swapper = str[i];
-			str[i] = swapper2;
-			i++;
-		}
-	}
-	str[0] = startchar;
-	return (str);
-}
-
-int	**double_swap(int **tab)
-{
-	tab[0] = swap(tab[0], 2);
-	tab[1] = swap(tab[1], 2);
-	ft_putstr("ss\n");
-	return (tab);
+	ptr->nbr = nbr1;
+	return (stack);
 }
 
 // 0 a_push
 // 1 b_push
-int	**pre_push(int *giver, int *receiver, int nb)
-{
-	int		**tab;
+// int	**pre_push(int *giver, int *receiver, int nb)
+// {
+// 	int		**tab;
 
-	if (nb == 0)
-	{
-		tab = pusha(giver, receiver);
-		ft_putstr("pa\n");
-	}
-	else
-	{
-		tab = pushb(giver, receiver);
-		ft_putstr("pb\n");
-	}
-	return (tab);
-}
+// 	if (nb == 0)
+// 	{
+// 		tab = pusha(giver, receiver);
+// 		ft_putstr("pa\n");
+// 	}
+// 	else
+// 	{
+// 		tab = pushb(giver, receiver);
+// 		ft_putstr("pb\n");
+// 	}
+// 	return (tab);
+// }
 
 /* 0 ra
  1 rb
  2 rr
 */
-int	**pre_rotate(int **tab, int option)
+t_liste	*pre_rotate(t_liste *stack, int option)
 {
 	if (option == 0)
 	{
-		tab[0] = rotate(tab[0]);
+		stack = rotate(stack);
 		ft_putstr("ra\n");
 	}
 	else if (option == 1)
 	{
-		tab[1] = rotate(tab[1]);
+		stack = rotate(stack);
 		ft_putstr("rb\n");
 	}
-	else if (option == 2)
-	{
-		tab[0] = rotate(tab[0]);
-		tab[1] = rotate(tab[1]);
-		ft_putstr("rr\n");
-	}
-	return (tab);
-}
-
-/* 0 rra
- 1 rrb
- 2 rrr
-*/
-int	**pre_rev_rotate(int **tab, int option)
-{
-	if (option == 0)
-	{
-		tab[0] = rev_rotate(tab[0]);
-		ft_putstr("rra\n");
-	}
-	else if (option == 1)
-	{
-		tab[1] = rev_rotate(tab[1]);
-		ft_putstr("rrb\n");
-	}
-	else if (option == 2)
-	{
-		tab[0] = rev_rotate(tab[0]);
-		tab[1] = rev_rotate(tab[1]);
-		ft_putstr("rrr\n");
-	}
-	return (tab);
+	return (stack);
 }
 
 int	ft_finder(const char *nptr)
@@ -580,7 +398,7 @@ int	ft_error(void)
 	return (-1);
 }
 
-int	*order(int *stacka, int argc)//pb
+int	*order(int *stacka, int argc)
 {
 	int		i;
 	int		j;
@@ -633,6 +451,13 @@ void	radix_sort(t_liste *stacka, int argc)
 	t_liste	*stackb;
 
 	stackb = listinit();
+	// int i = 0;
+	// stacka = rotate(stacka);
+	// while (i < (argc - 1))
+	// {
+	// 	printf("%d\n", unpile(stacka));
+	// 	i++;
+	// }
 	while (!stack_sorted(stacka, argc))
 	{
 		i = 0;
@@ -644,8 +469,8 @@ void	radix_sort(t_liste *stacka, int argc)
 			else
 				pre_push(stacka, stackb, 1);
 		}
-		while (stackb)
-			pre_push(stackb, stacka, 1);
+		while (stackb->first)
+			pre_push(stackb, stacka, 0);
 	}
 }
 
