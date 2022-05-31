@@ -442,12 +442,60 @@ int	*argtotab(char **argv)
 	return (tab);
 }
 
+t_liste	*listcpy(t_liste *stacka)
+{
+	t_liste		*cpy;
+	t_element	*ptr;
+	int			nbr;
+	int			i;
+
+	cpy = listinit();
+	ptr = stacka->first;
+	i = 0;
+	while (ptr)
+	{
+		nbr = ptr->nbr;
+		printf("%d a\n", nbr);
+		insertlist(cpy, nbr);
+		ptr = ptr->next;
+	}
+	return (cpy);
+}
+
+int	stacka_sorted(t_liste *stacka, int argc)
+{
+	int		i;
+	int		*value;
+	t_liste	*stacktest;
+
+	i = 0;
+	stacktest = listcpy(stacka);
+	value = malloc(sizeof(int) * (argc - 1));
+	while (i < (argc - 1))
+	{
+		value[i] = unpile(stacktest);
+		i++;
+	}
+	i = 0;
+	while (i < argc)
+	{
+		if (value[i] > value[i + 1])
+		{
+			free (value);
+			removelist(stacktest);
+			return (0);
+		}
+		i++;
+	}
+	removelist(stacktest);
+	free (value);
+	return (-1);
+}
+
 int	a_sorted(int *value)
 {
 	int		i;
-	int		j;
 
-	j = 0;
 	i = 0;
 	while (value[i + 1])
 	{
@@ -579,65 +627,12 @@ int	ft_bigbit(int *stack)
 	return (ret);
 }
 
-void	radix_sort(int *value, int argc)
+void	radix_sort(t_liste *stacka, int argc)
 {
 	int		i;
-	int		j;
-	int		*stack[2];
-	int		**ret;
-	int		bitpush;
-	int		bigbit;
-	int		pacount;
 
-	stack[0] = order(value, argc);//fonctionne
-	stack[1] = malloc(sizeof(stack[0]));
-	ret = stack;
-	bitpush = 0;
-	bigbit = ft_bigbit(stack[0]);
-	int f = 0;
-	while (f < 6)
-	{
-		printf("%d o\n", stack[0][f]);
-		f++;
-	}
-	while (bitpush <= bigbit)// trier de lunite a la centaine// marche pas
-	{
-		i = 0;
-		pacount = 0;
-		while (i < argc)// trie 1 bit
-		{
-			printf("ee  %d\n", ret[0][0]);
-			if (((ret[0][0] >> bitpush) & 1) == 1)
-				ret = pre_rotate(ret, 0);
-			else
-			{
-				ret = pre_push(ret[0], ret[1], 1);
-				pacount++;
-			}
-			i++;
-		}
-		f = 0;
-		while ((f * 4) <= sizeof(ret[0]))//
-		{
-			printf("%d a\n", ret[0][f]);
-			f++;
-		}
-		j = 0;
-		while (pacount > j)// remet dans stacka
-		{
-			ret = pre_push(ret[1], ret[0], 0);
-			j++;
-		}
-		f = 0;
-		while ((f * 4) <= sizeof(ret[0]))//
-		{
-			printf("%d afterpush\n", ret[0][f]);
-			f++;
-		}
-		bitpush++;
-	}
-	free(stack[0]);
-	free(stack[1]);
+	i = 0;
+	stacka_sorted(stacka, argc);
 }
 
 t_liste	*valuetoliste(int *value, int argc)
@@ -670,29 +665,16 @@ int main(int argc, char **argv)
 	}
 	stacka = valuetoliste(value, argc);//value dans liste
 	stackb = listinit();
-	// int str[] = {1, 2, 3};
-	// int str2[] = {4};
-	// int **tab;
-	// tab = malloc(2);
-	// tab[0] = str;
-	// tab[1] = str2;
-	// tab = pre_push(tab[1], tab[0], 0);
-	int i = 0;
-	while (i < 6)
-	{
-		printf("%d\n", unpile(stacka));
-		i++;
-	}
+	radix_sort(stacka, argc);
+	// int i = 0;
+	// while (i < (argc - 1))
+	// {
+	// 	printf("%d\n", unpile(stacka));
+	// 	i++;
+	// }
+	free (value);
 	removelist(stacka);
 	removelist(stackb);
-	// printf("%d\n", tab[1][0]);
-	// printf("%d\n", tab[0][1]);
-
-	// if (argc < 5)
-	// 	printf("argc < 5\n");//small_sort(value);//a faire
-	// else
-	// 	radix_sort(value, argc - 1);//pb
-	// free (value);
 	return (0);
 }
 
