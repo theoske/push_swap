@@ -646,11 +646,11 @@ t_liste	*valuetoliste(int *value, int argc)
 	int		i;
 
 	stacka = listinit();
-	i = 0;
-	while ((argc - 1) > i)
+	i = argc - 1;
+	while (i >= 0)
 	{
 		insertlist(stacka, value[i]);
-		i++;
+		i--;
 	}
 	return (stacka);
 }
@@ -668,7 +668,7 @@ int main(int argc, char **argv)
 		free (value);
 		return (ft_error());
 	}
-	stacka = valuetoliste(value, argc);
+	stacka = valuetoliste(value, argc);//value dans liste
 	stackb = listinit();
 	// int str[] = {1, 2, 3};
 	// int str2[] = {4};
