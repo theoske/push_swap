@@ -14,11 +14,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct s_element
+typedef struct s_element	t_element;
+struct s_element
 {
 	int			nbr;
 	t_element	*next;
-}	t_element;
+};
 
 //structure de controle contenant le premier element de la liste
 typedef struct s_liste
@@ -639,6 +640,21 @@ void	radix_sort(int *value, int argc)
 	free(stack[1]);
 }
 
+t_liste	*valuetoliste(int *value, int argc)
+{
+	t_liste	*stacka;
+	int		i;
+
+	stacka = listinit();
+	i = 0;
+	while ((argc - 1) > i)
+	{
+		insertlist(stacka, value[i]);
+		i++;
+	}
+	return (stacka);
+}
+
 int main(int argc, char **argv)
 {
 	int		*value;
@@ -652,7 +668,7 @@ int main(int argc, char **argv)
 		free (value);
 		return (ft_error());
 	}
-	stacka = listinit();
+	stacka = valuetoliste(value, argc);
 	stackb = listinit();
 	// int str[] = {1, 2, 3};
 	// int str2[] = {4};
@@ -661,20 +677,22 @@ int main(int argc, char **argv)
 	// tab[0] = str;
 	// tab[1] = str2;
 	// tab = pre_push(tab[1], tab[0], 0);
-	// int i = 0;
-	// while (i < 4)
-	// {
-	// 	printf("%d\n", tab[0][i]);
-	// 	i++;
-	// }
+	int i = 0;
+	while (i < 6)
+	{
+		printf("%d\n", unpile(stacka));
+		i++;
+	}
+	removelist(stacka);
+	removelist(stackb);
 	// printf("%d\n", tab[1][0]);
 	// printf("%d\n", tab[0][1]);
 
-	if (argc < 5)
-		printf("argc < 5\n");//small_sort(value);//a faire
-	else
-		radix_sort(value, argc - 1);//pb
-	free (value);
+	// if (argc < 5)
+	// 	printf("argc < 5\n");//small_sort(value);//a faire
+	// else
+	// 	radix_sort(value, argc - 1);//pb
+	// free (value);
 	return (0);
 }
 
