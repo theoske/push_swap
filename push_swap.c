@@ -27,6 +27,13 @@ typedef struct s_liste
 	t_element	*first;
 }	t_liste;
 
+typedef struct s_stacks
+{
+	t_liste		*stacka;
+	t_liste		*stackb;
+}	t_stacks;
+
+
 t_liste	*listinit(void)
 {
 	t_liste		*liste;
@@ -122,21 +129,21 @@ void	ft_putstr(char *str)
 1 : sb
 2 : ss
 */
-int	*swap(int *tab, int option)
-{
-	int		swapper;
+// int	*swap(int *tab, int option)
+// {
+// 	int		swapper;
 
-	if ((sizeof(tab) / 4) <= 1)
-		return (tab);
-	swapper = tab[0];
-	tab[0] = tab[1];
-	tab[1] = swapper;
-	if (option == 0)
-		ft_putstr("sa\n");
-	if (option == 1)
-		ft_putstr("sb\n");
-	return (tab);
-}
+// 	if ((sizeof(tab) / 4) <= 1)
+// 		return (tab);
+// 	swapper = tab[0];
+// 	tab[0] = tab[1];
+// 	tab[1] = swapper;
+// 	if (option == 0)
+// 		ft_putstr("sa\n");
+// 	if (option == 1)
+// 		ft_putstr("sb\n");
+// 	return (tab);
+// }
 
 t_liste	*rotate(t_liste *stack)
 {
@@ -154,23 +161,33 @@ t_liste	*rotate(t_liste *stack)
 	return (stack);
 }
 
+t_stacks	pushb(t_stacks stacks)
+{
+	insertlist(stacks.stackb, unpile(stacks.stacka));
+	return (stacks);
+}
+
+t_stacks	pusha(t_stacks stacks)
+{
+	insertlist(stacks.stacka, unpile(stacks.stackb));
+	return (stacks);
+}
+
 // 0 a_push
 // 1 b_push
-int	**pre_push(int *giver, int *receiver, int nb)
+t_stacks	pre_push(t_stacks stacks, int nb)
 {
-	int		**tab;
-
 	if (nb == 0)
 	{
-		tab = pusha(giver, receiver);
+		stacks = pusha(stacks);
 		ft_putstr("pa\n");
 	}
 	else
 	{
-		tab = pushb(giver, receiver);
+		stacks = pushb(stacks);
 		ft_putstr("pb\n");
 	}
-	return (tab);
+	return (stacks);
 }
 
 /* 0 ra
@@ -232,16 +249,6 @@ int	ft_atoi(const char *nptr)
 	if (i - j > 10)
 		return (0);
 	return (nb * neg);
-}
-
-int	ft_intlen(int *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
 }
 
 int	*argtotab(char **argv)
@@ -444,34 +451,33 @@ int	ft_bigbit(int *stack)
 	return (ret);
 }
 
-void	radix_sort(t_liste *stacka, int argc)
+t_stacks	radix_sort(t_stacks stacks, int argc)
 {
 	int		i;
 	int		nbr;
-	t_liste	*stackb;
 
-	stackb = listinit();
-	// int i = 0;
-	// stacka = rotate(stacka);
+	stacks.stackb = listinit();
+	stacks.stacka = rotate(stacks.stacka);
 	// while (i < (argc - 1))
 	// {
-	// 	printf("%d\n", unpile(stacka));
+	// 	printf("%d\n", unpile(stacks->stacka));
 	// 	i++;
 	// }
-	while (!stack_sorted(stacka, argc))
+	while (!stack_sorted(stacks.stacka, argc))
 	{
 		i = 0;
 		while (i < (argc - 1))
 		{
-			nbr = stacka->first->nbr;
+			nbr = stacks.stacka->first->nbr;
 			if ((nbr >> i) & 1)
-				stacka = pre_rotate(stacka, 0);
+				stacks.stacka = pre_rotate(stacks.stacka, 0);
 			else
-				pre_push(stacka, stackb, 1);//a faire trouver comment modifier a et b en une seule f. avec tableau sur 2 adresses?
+				stacks = pre_push(stacks, 1);//a faire trouver comment modifier a et b en une seule f. avec tableau sur 2 adresses?
 		}
-		while (stackb->first)
-			pre_push(stackb, stacka, 0);
+		while (stacks.stackb->first->next->next)
+			stacks = pre_push(stacks, 0);
 	}
+	return (stacks);
 }
 
 t_liste	*valuetoliste(int *value, int argc)
@@ -486,34 +492,33 @@ t_liste	*valuetoliste(int *value, int argc)
 		insertlist(stacka, value[i]);
 		i--;
 	}
+	printf("q\n");
 	return (stacka);
 }
 //liste deux cases trop grandes
 int main(int argc, char **argv)
 {
-	int		*value;
-	int		*index;
-	t_liste	*stacka;
-	t_liste	*stackb;
+	int			*value;
+	int			*index;
+	t_stacks	stacks;
 
-	value = argtotab(argv);//fonctionne
+	value = argtotab(argv);
 	if (ft_check(argv, value) == -1)
 	{
 		free (value);
 		return (ft_error());
 	}
-	stacka = valuetoliste(value, argc);//value dans liste
-	stackb = listinit();
-	radix_sort(stacka, argc);
+	stacks.stacka = valuetoliste(value, argc);//value dans liste
+	stacks = radix_sort(stacks, argc);
 	// int i = 0;
 	// while (i < (argc - 1))
 	// {
-	// 	printf("%d\n", unpile(stacka));
+	// 	printf("%d\n", unpile(stacks->stacka));
 	// 	i++;
 	// }
 	free (value);
-	removelist(stacka);
-	removelist(stackb);
+	removelist(stacks.stacka);
+	removelist(stacks.stackb);
 	return (0);
 }
 
