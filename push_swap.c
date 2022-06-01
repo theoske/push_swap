@@ -393,21 +393,21 @@ int	ft_error(void)
 	return (-1);
 }
 
-int	*order(int *stacka, int argc)
+int	*order(int *value, int argc)
 {
 	int		i;
 	int		j;
 	int		*nbr;
 
 	i = 0;
-	nbr = malloc(sizeof(stacka));
+	nbr = malloc(sizeof(int) * argc);
 	while (i < argc)
 	{
 		j = 0;
 		nbr[i] = 0;
 		while (j < argc)
 		{
-			if (stacka[i] > stacka[j])
+			if (value[i] > value[j])
 				nbr[i]++;
 			j++;
 		}
@@ -445,9 +445,16 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	int		nbr;
 
 	stacks.stackb = listinit();
-	stacks.stacka = rotate(stacks.stacka);
-	while (stack_sorted(stacks.stacka, argc) == 0)//trie pas
+	i = 0;
+	t_element	*ptr = stacks.stacka->first;
+	while (i < (argc - 1))
 	{
+		printf("%d\n", ptr->nbr);
+		ptr = ptr->next;
+		i++;
+	}
+	// while (stack_sorted(stacks.stacka, argc) == 0)//trie pas
+	// {
 		i = 0;
 		while (i < (argc - 1))
 		{
@@ -458,9 +465,9 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 				stacks = pre_push(stacks, 1);
 			i++;
 		}
-		while (stacks.stackb->first->next->next)
+		while (stacks.stackb->first->next)
 			stacks = pre_push(stacks, 0);
-	}
+	// }
 	return (stacks);
 }
 
@@ -470,16 +477,13 @@ t_liste	*valuetoliste(int *value, int argc)
 	int		i;
 
 	stacka = listinit();
-	i = argc - 1;
+	i = argc - 2;
 	while (i >= 0)
-	{
-		insertlist(stacka, value[i]);
-		i--;
-	}
+		insertlist(stacka, value[i--]);
 	return (stacka);
 }
 //liste deux cases trop grandes
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
 	int			*value;
 	int			*index;
@@ -491,7 +495,8 @@ int main(int argc, char **argv)
 		free (value);
 		return (ft_error());
 	}
-	stacks.stacka = valuetoliste(value, argc);//value dans liste
+	value = order(value, argc - 1);
+	stacks.stacka = valuetoliste(value, argc);
 	stacks.stackb = listinit();
 	stacks = radix_sort(stacks, argc);
 	free (value);
