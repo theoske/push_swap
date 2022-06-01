@@ -446,7 +446,7 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 
 	stacks.stackb = listinit();
 	stacks.stacka = rotate(stacks.stacka);
-	while (stack_sorted(stacks.stacka, argc) == 0)
+	while (stack_sorted(stacks.stacka, argc) == 0)//trie pas
 	{
 		i = 0;
 		while (i < (argc - 1))
