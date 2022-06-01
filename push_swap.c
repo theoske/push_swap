@@ -288,31 +288,19 @@ t_liste	*listcpy(t_liste *stacka)
 
 int	stack_sorted(t_liste *stacka, int argc)
 {
-	int		i;
-	int		*value;
-	t_liste	*stacktest;
+	int			i;
+	int			j;
+	t_element	*ptr;
 
-	i = 0;
-	stacktest = listcpy(stacka);
-	value = malloc(sizeof(int) * (argc - 1));
-	while (i < (argc - 1))
+	ptr = stacka->first;
+	while (ptr->next->next->next)
 	{
-		value[i] = unpile(stacktest);
-		i++;
-	}
-	i--;
-	while (i >= 0)
-	{
-		if (value[i] < value[i + 1])
-		{
-			free (value);
-			removelist(stacktest);
+		i = ptr->nbr;
+		j = ptr->next->nbr;
+		if (i > j)
 			return (0);
-		}
-		i--;
+		ptr = ptr->next;
 	}
-	removelist(stacktest);
-	free (value);
 	return (1);
 }
 
@@ -458,12 +446,7 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 
 	stacks.stackb = listinit();
 	stacks.stacka = rotate(stacks.stacka);
-	// while (i < (argc - 1))
-	// {
-	// 	printf("%d\n", unpile(stacks->stacka));
-	// 	i++;
-	// }
-	while (!stack_sorted(stacks.stacka, argc))
+	while (stack_sorted(stacks.stacka, argc) == 0)
 	{
 		i = 0;
 		while (i < (argc - 1))
@@ -472,7 +455,8 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 			if ((nbr >> i) & 1)
 				stacks.stacka = pre_rotate(stacks.stacka, 0);
 			else
-				stacks = pre_push(stacks, 1);//a faire trouver comment modifier a et b en une seule f. avec tableau sur 2 adresses?
+				stacks = pre_push(stacks, 1);
+			i++;
 		}
 		while (stacks.stackb->first->next->next)
 			stacks = pre_push(stacks, 0);
@@ -492,7 +476,6 @@ t_liste	*valuetoliste(int *value, int argc)
 		insertlist(stacka, value[i]);
 		i--;
 	}
-	printf("q\n");
 	return (stacka);
 }
 //liste deux cases trop grandes
@@ -509,13 +492,8 @@ int main(int argc, char **argv)
 		return (ft_error());
 	}
 	stacks.stacka = valuetoliste(value, argc);//value dans liste
+	stacks.stackb = listinit();
 	stacks = radix_sort(stacks, argc);
-	// int i = 0;
-	// while (i < (argc - 1))
-	// {
-	// 	printf("%d\n", unpile(stacks->stacka));
-	// 	i++;
-	// }
 	free (value);
 	removelist(stacks.stacka);
 	removelist(stacks.stackb);
