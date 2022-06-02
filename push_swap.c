@@ -453,9 +453,9 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 		ptr = ptr->next;
 		i++;
 	}
-	// while (stack_sorted(stacks.stacka, argc) == 0)//trie pas
-	// {
-		i = 1;
+	i = 0;
+	while (i < 4)//stack_sorted(stacks.stacka, argc) == 0)//trie pas
+	{
 		int j = 0;
 		while (++j < argc)
 		{
@@ -468,15 +468,13 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 		while (stacks.stackb->first->next)
 			stacks = pre_push(stacks, 0);
 		i++;
-		i = 0;
 		ptr = stacks.stacka->first;
 		while (ptr->next)
 		{
 			printf("%d\n", ptr->nbr);
 			ptr = ptr->next;
-			i++;
 		}
-	// }
+	}
 	return (stacks);
 }
 
