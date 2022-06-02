@@ -447,7 +447,7 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	stacks.stackb = listinit();
 	i = 0;
 	t_element	*ptr = stacks.stacka->first;
-	while (i < (argc - 1))
+	while (ptr->next)
 	{
 		printf("%d\n", ptr->nbr);
 		ptr = ptr->next;
@@ -455,18 +455,27 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	}
 	// while (stack_sorted(stacks.stacka, argc) == 0)//trie pas
 	// {
-		i = 0;
-		while (i < (argc - 1))
+		i = 1;
+		int j = 0;
+		while (++j < argc)
 		{
 			nbr = stacks.stacka->first->nbr;
-			if ((nbr >> i) & 1)
+			if (((nbr >> i) & 1) == 0)
 				stacks.stacka = pre_rotate(stacks.stacka, 0);
 			else
 				stacks = pre_push(stacks, 1);
-			i++;
 		}
 		while (stacks.stackb->first->next)
 			stacks = pre_push(stacks, 0);
+		i++;
+		i = 0;
+		ptr = stacks.stacka->first;
+		while (ptr->next)
+		{
+			printf("%d\n", ptr->nbr);
+			ptr = ptr->next;
+			i++;
+		}
 	// }
 	return (stacks);
 }
@@ -482,7 +491,7 @@ t_liste	*valuetoliste(int *value, int argc)
 		insertlist(stacka, value[i--]);
 	return (stacka);
 }
-//liste deux cases trop grandes
+
 int main(int argc, char *argv[])
 {
 	int			*value;
