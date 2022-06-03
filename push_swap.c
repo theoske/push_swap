@@ -457,7 +457,7 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	while (i < 4)//stack_sorted(stacks.stacka, argc) == 0)//trie pas
 	{
 		int j = 0;
-		while (++j < argc)
+		while (++j < argc)//pb 0 et 2 inverses
 		{
 			nbr = stacks.stacka->first->nbr;
 			if (((nbr >> i) & 1) == 0)
