@@ -460,6 +460,7 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 		while (++j < argc)//pb 0 et 2 inverses
 		{
 			nbr = stacks.stacka->first->nbr;
+			printf("\n%d\n", nbr);
 			if (((nbr >> i) & 1) == 0)
 				stacks.stacka = pre_rotate(stacks.stacka, 0);
 			else
