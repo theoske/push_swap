@@ -6,13 +6,13 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:51:33 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/07 17:56:28 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/07 18:11:29 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	stack_sorted(t_liste *stacka, int argc)
+int	stack_sorted(t_liste *stacka)
 {
 	int			i;
 	int			j;
@@ -32,9 +32,9 @@ int	stack_sorted(t_liste *stacka, int argc)
 
 int	ft_bigbit(int *stack)
 {
-	int		i;
-	int		j;
-	int		ret;
+	unsigned long int	i;
+	int	                j;
+	int	            	ret;
 
 	i = 0;
 	j = 0;
@@ -61,7 +61,7 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	stacks.stackb = listinit();
 		t_element	*ptr = stacks.stacka->first;
 	i = 0;
-	while (stack_sorted(stacks.stacka, argc) == 0)
+	while (stack_sorted(stacks.stacka) == 0)
 	{
 		int j = 0;
 		while (++j < argc)

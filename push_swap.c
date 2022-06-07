@@ -6,20 +6,20 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/07 17:56:25 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/07 18:04:32 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	*argtotab(char **argv)
+int	*argtotab(char **argv, int argc)
 {
 	int		i;
 	int		*tab;
 
 	i = 1;
 	tab = NULL;
-	tab = malloc((ft_strlen(argv) - 1) * 4);
+	tab = malloc((argc - 2) * sizeof(int));
 	while (argv[i])
 	{
 		tab[i - 1] = ft_atoi(argv[i]);
@@ -76,10 +76,9 @@ int	ft_check(char **argv, int *value)
 int main(int argc, char *argv[])
 {
 	int			*value;
-	int			*index;
 	t_stacks	stacks;
 
-	value = argtotab(argv);
+	value = argtotab(argv, argc);
 	if (ft_check(argv, value) == -1)
 	{
 		free (value);
