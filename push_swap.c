@@ -10,29 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-typedef struct s_element	t_element;
-struct s_element
-{
-	int			nbr;
-	t_element	*next;
-};
-
-//structure de controle contenant le premier element de la liste
-typedef struct s_liste
-{
-	t_element	*first;
-}	t_liste;
-
-typedef struct s_stacks
-{
-	t_liste		*stacka;
-	t_liste		*stackb;
-}	t_stacks;
-
+#include "push_swap.h"
 
 t_liste	*listinit(void)
 {
@@ -49,7 +27,6 @@ t_liste	*listinit(void)
 	return (liste);
 }
 
-// empile un nouvel element a la liste
 void	insertlist(t_liste *liste, int newnbr)
 {
 	t_element	*new;
@@ -106,13 +83,6 @@ unsigned int	ft_strlen(const char *s)
 	return (i);
 }
 
-/* 
-0 : sa
-1 : sb
-2 : ss
-
-*/
-
 void	ft_putstr(char *str)
 {
 	int		i;
@@ -124,26 +94,6 @@ void	ft_putstr(char *str)
 		i++;
 	}
 }
-
-/* 0 : sa
-1 : sb
-2 : ss
-*/
-// int	*swap(int *tab, int option)
-// {
-// 	int		swapper;
-
-// 	if ((sizeof(tab) / 4) <= 1)
-// 		return (tab);
-// 	swapper = tab[0];
-// 	tab[0] = tab[1];
-// 	tab[1] = swapper;
-// 	if (option == 0)
-// 		ft_putstr("sa\n");
-// 	if (option == 1)
-// 		ft_putstr("sb\n");
-// 	return (tab);
-// }
 
 t_liste	*rotate(t_liste *stack)
 {
@@ -173,8 +123,6 @@ t_stacks	pusha(t_stacks stacks)
 	return (stacks);
 }
 
-// 0 a_push
-// 1 b_push
 t_stacks	pre_push(t_stacks stacks, int nb)
 {
 	if (nb == 0)
@@ -536,20 +484,3 @@ int main(int argc, char *argv[])
 	removelist(stacks.stackb);
 	return (0);
 }
-
-// int i = 0;
-// 	while (argv[i + 1])
-// 	{
-// 		printf("%d", value[i]);
-// 		i++;
-// 	}
-
-// char str[] = "12345";
-// char str2[] = "789";
-// char **tab;
-// tab = malloc(2);
-// tab[0] = str;
-// tab[1] = str2;
-// tab = pre_rev_rotate(tab, 2);
-// printf("%s\n", tab[0]);
-// printf("%s\n", tab[1]);
