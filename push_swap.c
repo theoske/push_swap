@@ -152,7 +152,7 @@ t_liste	*rotate(t_liste *stack)
 
 	nbr1 = stack->first->nbr;
 	ptr = stack->first;
-	while (ptr->next->next->next)
+	while (ptr->next->next)
 	{
 		ptr->nbr = ptr->next->nbr;
 		ptr = ptr->next;
@@ -454,7 +454,7 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 		i++;
 	}
 	i = 0;
-	while (i < 4)//stack_sorted(stacks.stacka, argc) == 0)//trie pas
+	while (stack_sorted(stacks.stacka, argc) == 0)//trie pas
 	{
 		int j = 0;
 		while (++j < argc)//pb 0 et 2 inverses
