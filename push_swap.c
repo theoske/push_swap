@@ -224,10 +224,10 @@ int	ft_finder(const char *nptr)
 
 int	ft_atoi(const char *nptr)
 {
-	int			i;
-	int			j;
-	int			neg;
-	long int	nb;
+	int		i;
+	int		j;
+	int		neg;
+	int		nb;
 
 	neg = 1;
 	i = ft_finder(nptr);
@@ -293,7 +293,7 @@ int	stack_sorted(t_liste *stacka, int argc)
 	t_element	*ptr;
 
 	ptr = stacka->first;
-	while (ptr->next->next->next)
+	while (ptr->next->next)
 	{
 		i = ptr->nbr;
 		j = ptr->next->nbr;
@@ -315,6 +315,7 @@ int	a_sorted(int *value)
 			return (0);
 		i++;
 	}
+	write(1, "\n", 1);
 	return (-1);
 }
 
@@ -374,23 +375,20 @@ int	lim_check(int *value)
 	return (0);
 }
 
-int	ft_check(char **argv, int *value)
-{
-	if (nbr_check(argv) == -1)
-		return (-1);
-	if (lim_check(value) == -1)
-		return (-1);
-	if (a_sorted(value) == -1)
-		return (-1);
-	if (dup_check(value) == -1)
-		return (-1);
-	return (0);
-}
-
 int	ft_error(void)
 {
 	ft_putstr("Error\n");
 	return (-1);
+}
+
+int	ft_check(char **argv, int *value)
+{
+	if (nbr_check(argv) == -1 || dup_check(value) == -1 ||
+		lim_check(value) == -1)
+		return (ft_error());
+	if (a_sorted(value) == -1)
+		return (-1);
+	return (0);
 }
 
 int	*order(int *value, int argc)
@@ -445,14 +443,14 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	int		nbr;
 
 	stacks.stackb = listinit();
-	i = 0;
+	// i = 0;
 	t_element	*ptr = stacks.stacka->first;
-	while (ptr->next)
-	{
-		printf("%d\n", ptr->nbr);
-		ptr = ptr->next;
-		i++;
-	}
+	// while (ptr->next)
+	// {
+	// 	printf("%d\n", ptr->nbr);
+	// 	ptr = ptr->next;
+	// 	i++;
+	// }
 	i = 0;
 	while (stack_sorted(stacks.stacka, argc) == 0)//trie pas
 	{
@@ -460,8 +458,7 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 		while (++j < argc)//pb 0 et 2 inverses
 		{
 			nbr = stacks.stacka->first->nbr;
-			printf("\n%d\n", nbr);
-			if (((nbr >> i) & 1) == 0)
+			if (((nbr >> i) & 1) == 1)
 				stacks.stacka = pre_rotate(stacks.stacka, 0);
 			else
 				stacks = pre_push(stacks, 1);
@@ -469,12 +466,12 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 		while (stacks.stackb->first->next)
 			stacks = pre_push(stacks, 0);
 		i++;
-		ptr = stacks.stacka->first;
-		while (ptr->next)
-		{
-			printf("%d\n", ptr->nbr);
-			ptr = ptr->next;
-		}
+	}
+	ptr = stacks.stacka->first;
+	while (ptr->next)
+	{
+		printf("%d\n", ptr->nbr);
+		ptr = ptr->next;
 	}
 	return (stacks);
 }
@@ -501,7 +498,7 @@ int main(int argc, char *argv[])
 	if (ft_check(argv, value) == -1)
 	{
 		free (value);
-		return (ft_error());
+		return (-1);
 	}
 	value = order(value, argc - 1);
 	stacks.stacka = valuetoliste(value, argc);
