@@ -361,15 +361,49 @@ int	nbr_check(char **argv)
 	return (0);
 }
 
-int	lim_check(int *value)
+int	ft_strncmp(const char *str1, const char *str2, size_t n)
 {
-	int		i;
+	size_t	i;
 
 	i = 0;
-	while (value[i])
+	if ((!str1[i] && !str2[i]) || n == 0)
+		return (0);
+	n--;
+	while (str1[i] == str2[i] && str1[i] && str2[i] && i < n)
+		i++;
+	return (((unsigned char *)str1)[i] - ((unsigned char *)str2)[i]);
+}
+
+int	neglim_check(char *str)
+{
+	if (ft_strlen(str) > 11 || (ft_strlen(str) == 11 &&
+		ft_strncmp(str, "-2147483648", 11) > 0))
+		return (-1);	
+	return (0);
+}
+
+int	poslim_check(char *str)
+{
+	if (ft_strlen(str) > 10 || (ft_strlen(str) == 10 &&
+		ft_strncmp(str, "2147483647", 10) > 0))
+		return (-1);	
+	return (0);
+}
+
+int	lim_check(char **argv)
+{
+	int		i;
+	int		ret;
+
+	i = 1;
+	while (argv[i])
 	{
-		if (value[i] > 2147483647 || value[i] < -2147483648)
-			return (-1);
+		if (argv[i][0] == '-')
+			ret = neglim_check(argv[i]);
+		else
+			ret = poslim_check(argv[i]);
+		if (ret == -1)
+			return(-1);
 		i++;
 	}
 	return (0);
@@ -384,7 +418,7 @@ int	ft_error(void)
 int	ft_check(char **argv, int *value)
 {
 	if (nbr_check(argv) == -1 || dup_check(value) == -1 ||
-		lim_check(value) == -1)
+		lim_check(argv) == -1)
 		return (ft_error());
 	if (a_sorted(value) == -1)
 		return (-1);
@@ -443,19 +477,12 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	int		nbr;
 
 	stacks.stackb = listinit();
-	// i = 0;
-	t_element	*ptr = stacks.stacka->first;
-	// while (ptr->next)
-	// {
-	// 	printf("%d\n", ptr->nbr);
-	// 	ptr = ptr->next;
-	// 	i++;
-	// }
+		t_element	*ptr = stacks.stacka->first;
 	i = 0;
-	while (stack_sorted(stacks.stacka, argc) == 0)//trie pas
+	while (stack_sorted(stacks.stacka, argc) == 0)
 	{
 		int j = 0;
-		while (++j < argc)//pb 0 et 2 inverses
+		while (++j < argc)
 		{
 			nbr = stacks.stacka->first->nbr;
 			if (((nbr >> i) & 1) == 1)
