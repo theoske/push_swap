@@ -37,7 +37,6 @@ t_liste	        *pre_rotate(t_liste *stack, int option);
 int	            ft_finder(const char *nptr);
 int	            ft_atoi(const char *nptr);
 int	            *argtotab(char **argv);
-t_liste         *listcpy(t_liste *stacka);
 int         	stack_sorted(t_liste *stacka, int argc);
 int	            a_sorted(int *value);
 int	            dup_check(int *value);
