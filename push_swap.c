@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/08 16:10:01 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:04:49 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,36 +136,62 @@ t_stacks	three_sized(t_stacks stacks)//123   321   213   312   132  231
 
 t_stacks	four_sized(t_stacks stacks)//1234  2134    3124    4123
 {
-	int			firstnbr;
-	t_stacks	newstacks;
+	stacks = pre_push(stacks, 1);
+	stacks = three_sized(stacks);
+	stacks = pre_push(stacks, 0);
+	if (stacks.stacka->first->nbr > stacks.stacka->first->next->next->next->nbr)//4123
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	else if (stacks.stacka->first->nbr > stacks.stacka->first->next->next->nbr)//3124 
+	{
+		stacks = rra(stacks);
+		stacks = swapa(stacks);
+		stacks = rra(stacks);
+		stacks = rra(stacks);
+	}
+	else if (stacks.stacka->first->nbr > stacks.stacka->first->next->nbr)//2134
+		stacks = swapa(stacks);
+	return (stacks);
+}
+//mettre nbrs en trop dans b et trier a la main
+t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
+{
+	t_element	*ptr;
+	int			smallest;
+	int			biggest;
 
-	firstnbr = stacks.stacka->first->nbr;
-	newstacks.stackb = stacks.stackb;
-	newstacks.stacka->first = stacks.stacka->first->next;
-	newstacks = three_sized(newstacks);
-	insertlist(newstacks.stacka, firstnbr);
-	if (newstacks.stacka->first->nbr < newstacks.stacka->first->next->nbr)//1234
-		return (newstacks);
-	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->nbr)//4123
+	ptr = stacks.stacka->first;
+	smallest = ptr->nbr;
+	biggest = ptr->nbr;
+	while (ptr->next->next)//trouve valeur plus petit nbr et plus grand
+	{
+		if (ptr->nbr > biggest)
+			biggest = ptr->nbr;
+		if (ptr->nbr < smallest)
+			smallest = ptr->nbr;
+		ptr = ptr->next;
+	}
+	//mettre +petit et +grand dans stackb (les retrouver par concordance)
+
+	stacks = pre_push(stacks, 1);
+	stacks = pre_push(stacks, 1);
+
+
+	if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->next->nbr)//51234
 		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
-	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->nbr)//3124 
+	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->nbr)//41235
 	{
 		newstacks = rra(newstacks);
 		newstacks = swapa(newstacks);
-		newstacks = rra(newstacks);
-		newstacks = rra(newstacks);
+		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
+		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
 	}
-	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->nbr)//2134
-		newstacks = swapa(stacks);
-	return (newstacks);
+	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->nbr)//31245   pb213  rb321  pa12345
+	{
+
+	}
 }
 
-t_stacks	five_sized(t_stacks stacks)
-{
-	
-}
-
-t_stacks	small_sort(t_stacks stacks, int argc)
+t_stacks	small_sort(t_stacks stacks, int argc)//mettre nbrs en trop dans b et trier a la main
 {
 	if (argc == 3)
 		return (swapa(stacks));
