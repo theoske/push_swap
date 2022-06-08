@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/08 15:51:13 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/08 16:10:01 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,27 @@ t_stacks	swapa(t_stacks stacks)
 	return (stacks);
 }
 
+t_stacks	rra(t_stacks stacks)//dernier passe premier   insertlist(stacks, last)
+{
+	int			last;
+	int			swapper;
+	t_element	*ptr;
+
+	ptr = stacks.stacka->first;
+	while (ptr->next)
+	{
+		last = ptr->nbr;
+		ptr = ptr->next;
+	}
+	insertlist(stacks.stacka, last);
+	ptr = stacks.stacka->first;
+	while (ptr->next->next)
+		ptr = ptr->next;
+	free (ptr->next);
+	ptr = 0;
+	return (stacks);
+}
+
 t_stacks	three_sized(t_stacks stacks)//123   321   213   312   132  231
 {
 	int		a;
@@ -109,31 +130,7 @@ t_stacks	three_sized(t_stacks stacks)//123   321   213   312   132  231
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 	}
 	else if (b > a && b > c && a > c)//231
-	{
-		stacks.stacka = pre_rotate(stacks.stacka, 0);
-		stacks.stacka = pre_rotate(stacks.stacka, 0);
-	}
-	return (stacks);
-}
-
-t_stacks	rra(t_stacks stacks)//dernier passe premier   insertlist(stacks, last)
-{
-	int			last;
-	int			swapper;
-	t_element	*ptr;
-
-	ptr = stacks.stacka->first;
-	while (ptr->next)
-	{
-		last = ptr->nbr;
-		ptr = ptr->next;
-	}
-	insertlist(stacks.stacka, last);
-	ptr = stacks.stacka->first;
-	while (ptr->next->next)
-		ptr = ptr->next;
-	free (ptr->next);
-	ptr = 0;
+		stacks = rra(stacks);
 	return (stacks);
 }
 
@@ -151,14 +148,21 @@ t_stacks	four_sized(t_stacks stacks)//1234  2134    3124    4123
 		return (newstacks);
 	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->nbr)//4123
 		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
-	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->nbr)//3124   rr4312   sa3412 rr4123 rr1234 
+	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->nbr)//3124 
 	{
 		newstacks = rra(newstacks);
 		newstacks = swapa(newstacks);
 		newstacks = rra(newstacks);
 		newstacks = rra(newstacks);
 	}
+	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->nbr)//2134
+		newstacks = swapa(stacks);
 	return (newstacks);
+}
+
+t_stacks	five_sized(t_stacks stacks)
+{
+	
 }
 
 t_stacks	small_sort(t_stacks stacks, int argc)
@@ -170,7 +174,7 @@ t_stacks	small_sort(t_stacks stacks, int argc)
 	else if (argc == 5)
 		return (four_sized(stacks));
 	else if (argc == 6)
-
+		return (five_sized(stacks));
 }
 
 int main(int argc, char *argv[])
