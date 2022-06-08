@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/07 18:04:32 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/08 14:45:33 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,60 @@ int	ft_check(char **argv, int *value)
 	return (0);
 }
 
+t_stacks	swapa(t_stacks stacks)
+{
+	int		swapper;
+
+	swapper = stacks.stacka->first->nbr;
+	stacks.stacka->first->nbr = stacks.stacka->first->next->nbr;
+	stacks.stacka->first->next->nbr = swapper;
+	ft_putstr("sa\n");
+	return (stacks);
+}
+
+t_stacks	three_sized(t_stacks stacks)//123   321   213   312   132  231
+{
+	int		a;
+	int		b;
+	int		c;
+
+	a = stacks.stacka->first->nbr;
+	b = stacks.stacka->first->next->nbr;
+	c = stacks.stacka->first->next->next->nbr;
+	if (a > b && b > c)// 321
+	{
+		stacks = swapa(stacks);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	}
+	else if (a > b && c > b && a < c)//213
+		stacks = swapa(stacks);
+	else if (a > b && a > c && c > b)//312
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	else if (b > a && b > c && c > a)//132
+	{
+		stacks = swapa(stacks);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	}
+	else if (b > a && b > c && a > c)//231
+	{
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	}
+	return (stacks);
+}
+
+t_stacks	small_sort(t_stacks stacks, int argc)
+{
+	if (argc == 3)
+		return (swapa(stacks));
+	else if (argc == 4)
+		return (three_sized(stacks));
+	else if (argc == 5)
+	else if (argc == 6)
+	return (stacks);
+}
+
 int main(int argc, char *argv[])
 {
 	int			*value;
@@ -87,7 +141,10 @@ int main(int argc, char *argv[])
 	value = order(value, argc - 1);
 	stacks.stacka = valuetoliste(value, argc);
 	stacks.stackb = listinit();
-	stacks = radix_sort(stacks, argc);
+	if (argc > 6)
+		stacks = radix_sort(stacks, argc);
+	else
+		stacks = small_sort(stacks, argc);
 	free (value);
 	removelist(stacks.stacka);
 	removelist(stacks.stackb);
