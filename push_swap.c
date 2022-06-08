@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/08 14:45:33 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/08 15:51:13 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,51 @@ t_stacks	three_sized(t_stacks stacks)//123   321   213   312   132  231
 	return (stacks);
 }
 
+t_stacks	rra(t_stacks stacks)//dernier passe premier   insertlist(stacks, last)
+{
+	int			last;
+	int			swapper;
+	t_element	*ptr;
+
+	ptr = stacks.stacka->first;
+	while (ptr->next)
+	{
+		last = ptr->nbr;
+		ptr = ptr->next;
+	}
+	insertlist(stacks.stacka, last);
+	ptr = stacks.stacka->first;
+	while (ptr->next->next)
+		ptr = ptr->next;
+	free (ptr->next);
+	ptr = 0;
+	return (stacks);
+}
+
+t_stacks	four_sized(t_stacks stacks)//1234  2134    3124    4123
+{
+	int			firstnbr;
+	t_stacks	newstacks;
+
+	firstnbr = stacks.stacka->first->nbr;
+	newstacks.stackb = stacks.stackb;
+	newstacks.stacka->first = stacks.stacka->first->next;
+	newstacks = three_sized(newstacks);
+	insertlist(newstacks.stacka, firstnbr);
+	if (newstacks.stacka->first->nbr < newstacks.stacka->first->next->nbr)//1234
+		return (newstacks);
+	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->nbr)//4123
+		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
+	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->nbr)//3124   rr4312   sa3412 rr4123 rr1234 
+	{
+		newstacks = rra(newstacks);
+		newstacks = swapa(newstacks);
+		newstacks = rra(newstacks);
+		newstacks = rra(newstacks);
+	}
+	return (newstacks);
+}
+
 t_stacks	small_sort(t_stacks stacks, int argc)
 {
 	if (argc == 3)
@@ -123,8 +168,9 @@ t_stacks	small_sort(t_stacks stacks, int argc)
 	else if (argc == 4)
 		return (three_sized(stacks));
 	else if (argc == 5)
+		return (four_sized(stacks));
 	else if (argc == 6)
-	return (stacks);
+
 }
 
 int main(int argc, char *argv[])
