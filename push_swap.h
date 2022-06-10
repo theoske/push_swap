@@ -51,5 +51,10 @@ int	            *order(int *value, int argc);
 int	            ft_bigbit(int *stack);
 t_stacks    	radix_sort(t_stacks stacks, int argc);
 t_liste	        *valuetoliste(int *value, int argc);
+t_stacks		four_sized(t_stacks stacks);
+t_stacks		three_sized(t_stacks stacks);
+t_stacks		rra(t_stacks stacks);
+t_stacks		swapa(t_stacks stacks);
+t_stacks		small_sort(t_stacks stacks, int argc);
 
 #endif

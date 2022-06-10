@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/08 17:04:49 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/10 16:41:46 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	*argtotab(char **argv, int argc)
 
 	i = 1;
 	tab = NULL;
-	tab = malloc((argc - 2) * sizeof(int));
+	tab = malloc((argc - 1) * sizeof(int));
 	while (argv[i])
 	{
 		tab[i - 1] = ft_atoi(argv[i]);
@@ -87,7 +87,6 @@ t_stacks	swapa(t_stacks stacks)
 t_stacks	rra(t_stacks stacks)//dernier passe premier   insertlist(stacks, last)
 {
 	int			last;
-	int			swapper;
 	t_element	*ptr;
 
 	ptr = stacks.stacka->first;
@@ -152,44 +151,51 @@ t_stacks	four_sized(t_stacks stacks)//1234  2134    3124    4123
 		stacks = swapa(stacks);
 	return (stacks);
 }
+
+// t_stacks	find_extreme(t_stacks stacks)
+// {
+	
+// }
+
 //mettre nbrs en trop dans b et trier a la main
-t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
-{
-	t_element	*ptr;
-	int			smallest;
-	int			biggest;
+// t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
+// {
+// 	t_element	*ptr;
+// 	int			smallest;
+// 	int			biggest;
 
-	ptr = stacks.stacka->first;
-	smallest = ptr->nbr;
-	biggest = ptr->nbr;
-	while (ptr->next->next)//trouve valeur plus petit nbr et plus grand
-	{
-		if (ptr->nbr > biggest)
-			biggest = ptr->nbr;
-		if (ptr->nbr < smallest)
-			smallest = ptr->nbr;
-		ptr = ptr->next;
-	}
-	//mettre +petit et +grand dans stackb (les retrouver par concordance)
+// 	ptr = stacks.stacka->first;
+// 	smallest = ptr->nbr;
+// 	biggest = ptr->nbr;
+// 	while (ptr->next->next)//trouve valeur plus petit nbr et plus grand
+// 	{
+// 		if (ptr->nbr > biggest)
+// 			biggest = ptr->nbr;
+// 		if (ptr->nbr < smallest)
+// 			smallest = ptr->nbr;
+// 		ptr = ptr->next;
+// 	}
+// 	//mettre +petit et +grand dans stackb (les retrouver par concordance)
+// 	stacks = find_extreme(stacks);
 
-	stacks = pre_push(stacks, 1);
-	stacks = pre_push(stacks, 1);
+// 	stacks = pre_push(stacks, 1);
+// 	stacks = pre_push(stacks, 1);
 
 
-	if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->next->nbr)//51234
-		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
-	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->nbr)//41235
-	{
-		newstacks = rra(newstacks);
-		newstacks = swapa(newstacks);
-		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
-		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
-	}
-	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->nbr)//31245   pb213  rb321  pa12345
-	{
+// 	if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->next->nbr)//51234
+// 		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
+// 	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->next->nbr)//41235
+// 	{
+// 		newstacks = rra(newstacks);
+// 		newstacks = swapa(newstacks);
+// 		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
+// 		newstacks.stacka = pre_rotate(newstacks.stacka, 0);
+// 	}
+// 	else if (newstacks.stacka->first->nbr > newstacks.stacka->first->next->next->nbr)//31245   pb213  rb321  pa12345
+// 	{
 
-	}
-}
+// 	}
+// }
 
 t_stacks	small_sort(t_stacks stacks, int argc)//mettre nbrs en trop dans b et trier a la main
 {
@@ -197,10 +203,10 @@ t_stacks	small_sort(t_stacks stacks, int argc)//mettre nbrs en trop dans b et tr
 		return (swapa(stacks));
 	else if (argc == 4)
 		return (three_sized(stacks));
-	else if (argc == 5)
+	else
 		return (four_sized(stacks));
-	else if (argc == 6)
-		return (five_sized(stacks));
+	// else if (argc == 6)
+	// 	return (five_sized(stacks));
 }
 
 int main(int argc, char *argv[])
@@ -217,7 +223,7 @@ int main(int argc, char *argv[])
 	value = order(value, argc - 1);
 	stacks.stacka = valuetoliste(value, argc);
 	stacks.stackb = listinit();
-	if (argc > 6)
+	if (argc > 5)
 		stacks = radix_sort(stacks, argc);
 	else
 		stacks = small_sort(stacks, argc);
