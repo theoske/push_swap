@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:51:33 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/11 15:05:08 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:42:30 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	return (stacks);
 }
 
-int	a_sorted(int *value)
+int	a_sorted(int *value, int argc)
 {
 	int		i;
 
 	i = 0;
-	while (value[i + 1])
+	while ((i + 2) < argc)
 	{
 		if (value[i] > value[i + 1])
 			return (0);

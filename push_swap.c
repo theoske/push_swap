@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/11 16:24:46 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:43:06 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,32 @@ t_liste	*valuetoliste(int *value, int argc)
 	return (stacka);
 }
 
-int	ft_check(char **argv, int *value)
+int	dup_check(int *value, int argc)
 {
-	if (nbr_check(argv) == -1 || dup_check(value) == -1 ||
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < (argc - 1))
+	{
+		j = 0;
+		while (j < argc - 1)
+		{
+			if (j != i && value[i] == value[j])
+				return (-1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	ft_check(char **argv, int *value, int argc)
+{
+	if (nbr_check(argv) == -1 || dup_check(value, argc) == -1 ||
 		lim_check(argv) == -1)
 		return (ft_error());
-	if (a_sorted(value) == -1)
+	if (a_sorted(value, argc) == -1)
 		return (-1);
 	return (0);
 }
@@ -89,27 +109,19 @@ t_stacks	swapa(t_stacks stacks)
 
 t_stacks	rra(t_stacks stacks)//dernier passe premier   insertlist(stacks, last)
 {
-	int			last;
+	t_element	*last;
 	t_element	*ptr;
-	t_element	*ptr2;
 
+	last = stacks.stacka->first;
+	while (last->next->next)
+		last = last->next;
 	ptr = stacks.stacka->first;
-	while (ptr->next)
-	{
-		last = ptr->nbr;
-		ptr2 = ptr;
+	while (ptr->next->next->next)
 		ptr = ptr->next;
-	}
-	insertlist(stacks.stacka, last);
-	free (ptr2->next);
-	ptr2 = NULL;
+	ptr->next = ptr->next->next;
+	last->next = stacks.stacka->first;
+	stacks.stacka->first = last;
 	ft_putstr("rra\n");
-	t_element *ptr3 = stacks.stacka->first;
-		while (ptr3->next)
-	{
-		printf("%d b\n", ptr3->nbr);
-		ptr3 = ptr3->next;
-	}
 	return (stacks);
 }
 
@@ -152,6 +164,7 @@ t_stacks	four_sized(t_stacks stacks)//1234  2134    3124    4123
 	{
 		stacks = rra(stacks);
 		stacks = swapa(stacks);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 	}
 	else if (stacks.stacka->first->nbr > stacks.stacka->first->next->nbr)//2134
@@ -246,7 +259,7 @@ int main(int argc, char *argv[])// pb five
 	t_stacks	stacks;
 
 	value = argtotab(argv, argc);
-	if (ft_check(argv, value) == -1)
+	if (ft_check(argv, value, argc) == -1)
 	{
 		free (value);
 		return (-1);

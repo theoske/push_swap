@@ -6,31 +6,11 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:44:43 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/07 18:15:43 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:35:09 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-int	dup_check(int *value)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (value[i])
-	{
-		j = 0;
-		while (value[j])
-		{
-			if (i != j && value[i] == value[j])
-				return (-1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
 
 int	nbr_check(char **argv)
 {
