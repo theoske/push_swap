@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/10 17:25:47 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/11 16:24:46 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ t_liste	*valuetoliste(int *value, int argc)
 	stacka = listinit();
 	i = argc - 2;
 	while (i >= 0)
-		insertlist(stacka, value[i--]);
+	{
+		insertlist(stacka, value[i]);
+		i--;
+	}
 	return (stacka);
 }
 
@@ -88,20 +91,25 @@ t_stacks	rra(t_stacks stacks)//dernier passe premier   insertlist(stacks, last)
 {
 	int			last;
 	t_element	*ptr;
+	t_element	*ptr2;
 
 	ptr = stacks.stacka->first;
 	while (ptr->next)
 	{
 		last = ptr->nbr;
+		ptr2 = ptr;
 		ptr = ptr->next;
 	}
 	insertlist(stacks.stacka, last);
-	ptr = stacks.stacka->first;
-	while (ptr->next->next)
-		ptr = ptr->next;
-	free (ptr->next);
-	ptr = 0;
+	free (ptr2->next);
+	ptr2 = NULL;
 	ft_putstr("rra\n");
+	t_element *ptr3 = stacks.stacka->first;
+		while (ptr3->next)
+	{
+		printf("%d b\n", ptr3->nbr);
+		ptr3 = ptr3->next;
+	}
 	return (stacks);
 }
 
@@ -193,7 +201,30 @@ t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
 	}
 	stacks = pre_push(stacks, 1);
 
-	stacks = four_sized(stacks);
+	// mettre biggest dans b
+	ptr = stacks.stacka->first;
+	i = 0;
+	while (ptr->nbr != biggest)//trouve index plus petit nbr
+	{
+		ptr = ptr->next;
+		i++;
+	}
+	// mettre smallest dans b
+	if (i == 1)
+		stacks = swapa(stacks);
+	else if (i == 2)
+	{
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	}
+	else if (i == 3)
+		stacks = rra(stacks);
+	stacks = pre_push(stacks, 1);
+
+	stacks = three_sized(stacks);
+	stacks = pre_push(stacks, 0);
+	stacks.stacka = pre_rotate(stacks.stacka, 0);
+	stacks = pre_push(stacks, 0);
 	return (stacks);
 }
 
@@ -229,9 +260,9 @@ int main(int argc, char *argv[])// pb five
 		stacks = small_sort(stacks, argc);
 	t_element *ptr = stacks.stacka->first;
 	free (value);
-		while (ptr)
+		while (ptr->next)
 	{
-		printf("%d\n", ptr->nbr);
+		printf("%d a\n", ptr->nbr);
 		ptr = ptr->next;
 	}
 	removelist(stacks.stacka);

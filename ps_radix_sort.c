@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:51:33 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/10 16:03:17 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/11 15:05:08 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 	int		i;
 	int		nbr;
 
-	t_element	*ptr = stacks.stacka->first;
 	i = 0;
 	while (stack_sorted(stacks.stacka) == 0)
 	{
@@ -74,12 +73,6 @@ t_stacks	radix_sort(t_stacks stacks, int argc)
 		while (stacks.stackb->first->next)
 			stacks = pre_push(stacks, 0);
 		i++;
-	}
-	ptr = stacks.stacka->first;
-	while (ptr->next)
-	{
-		printf("%d\n", ptr->nbr);
-		ptr = ptr->next;
 	}
 	return (stacks);
 }
