@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/14 15:50:29 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/14 17:34:50 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,72 +172,77 @@ t_stacks	four_sized(t_stacks stacks)
 	return (stacks);
 }
 
-int	*find_biggest(t_liste *stack)
+int	find_biggest(t_liste *stack)
 {
 	t_element	*ptr;
 	int			biggest;
-	int			*placement;
+	int			placement;
 
 	ptr = stack->first;
-	placement = malloc(2 * sizeof(int));
 	biggest = ptr->nbr;
-	while (ptr->next->next)
+	while (ptr->next)
 	{
 		if (ptr->nbr > biggest)
 			biggest = ptr->nbr;
 		ptr = ptr->next;
 	}
 	ptr = stack->first;
+	placement = 0;
 	while (ptr->nbr != biggest)
 	{
 		ptr = ptr->next;
-		placement[0]++;
-	}
-	ptr = stack->first;
-	while (ptr->nbr != (biggest - 1))
-	{
-		ptr = ptr->next;
-		placement[1]++;
+		placement++;
 	}
 	return (placement);
+}
+
+t_stacks	five_sized_operations(t_stacks stacks)
+{
+	stacks = pre_push(stacks, 1);
+	stacks = three_sized(stacks);
+	stacks = pre_push(stacks, 0);
+	stacks = pre_push(stacks, 0);
+	stacks = swapa(stacks);
+	stacks.stacka = pre_rotate(stacks.stacka, 0);
+	stacks.stacka = pre_rotate(stacks.stacka, 0);
+	return (stacks);
+}
+
+t_stacks	nameless(t_stacks stacks, int tab)
+{
+	if (tab == 1)
+		stacks = swapa(stacks);
+	else if (tab == 2)
+	{
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	}
+	else if (tab >= 3)
+		stacks = rra(stacks);
+	return (stacks);
 }
 
 //mettre nbrs en trop dans b et trier a la main
 t_stacks	five_sized(t_stacks stacks)
 {
-	t_element	*ptr;
-	int			*tab;
+	int		tab;
 
 	tab = find_biggest(stacks.stacka);
-	if (tab[1] == 1)
+	if (tab == 1)
 		stacks = swapa(stacks);
-	else if (tab[1] == 2)
+	else if (tab == 2)
 	{
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 	}
-	else if (tab[1] >= 3)
+	else if (tab >= 3)
 		stacks = rra(stacks);
-	if (tab[1] == 4)
-		stacks = rra(stacks);
-	stacks = pre_push(stacks, 1);
-	ptr = stacks.stacka->first;
-	if (tab[0] == 1)
-		stacks = swapa(stacks);
-	else if (tab[0] == 2)
-	{
-		stacks.stacka = pre_rotate(stacks.stacka, 0);
-		stacks.stacka = pre_rotate(stacks.stacka, 0);
-	}
-	else if (tab[0] >= 3)
+	if (tab == 3)
 		stacks = rra(stacks);
 	stacks = pre_push(stacks, 1);
-	stacks = three_sized(stacks);
-	stacks = pre_push(stacks, 0);
-	stacks = pre_push(stacks, 0);
-	stacks.stacka = pre_rotate(stacks.stacka, 0);
-	stacks.stacka = pre_rotate(stacks.stacka, 0);
-	return (stacks);
+	tab = find_biggest(stacks.stacka);
+	stacks = nameless(stacks, tab);
+	return (five_sized_operations(stacks));
 }
 
 t_stacks	small_sort(t_stacks stacks, int argc)
