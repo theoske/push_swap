@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/11 17:43:06 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/14 15:04:59 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,29 +176,24 @@ t_stacks	four_sized(t_stacks stacks)//1234  2134    3124    4123
 t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
 {
 	t_element	*ptr;
-	int			smallest;
 	int			biggest;
 	int			i;
 
 	ptr = stacks.stacka->first;
-	smallest = ptr->nbr;
 	biggest = ptr->nbr;
 	while (ptr->next->next)//trouve valeur plus petit nbr et plus grand
 	{
 		if (ptr->nbr > biggest)
 			biggest = ptr->nbr;
-		if (ptr->nbr < smallest)
-			smallest = ptr->nbr;
 		ptr = ptr->next;
 	}
 	ptr = stacks.stacka->first;
 	i = 0;
-	while (ptr->nbr != smallest)//trouve index plus petit nbr
+	while (ptr->nbr != (biggest - 1))//trouve 2e ndex + grand
 	{
 		ptr = ptr->next;
 		i++;
 	}
-	// mettre smallest dans b
 	if (i == 1)
 		stacks = swapa(stacks);
 	else if (i == 2)
@@ -207,13 +202,12 @@ t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 	}
 	else if (i >= 3)
-	{
-		if (i == 3)
-			stacks = rra(stacks);
 		stacks = rra(stacks);
-	}
+	if (i == 4)
+		stacks = rra(stacks);
+	
 	stacks = pre_push(stacks, 1);
-
+	
 	// mettre biggest dans b
 	ptr = stacks.stacka->first;
 	i = 0;
@@ -222,7 +216,6 @@ t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
 		ptr = ptr->next;
 		i++;
 	}
-	// mettre smallest dans b
 	if (i == 1)
 		stacks = swapa(stacks);
 	else if (i == 2)
@@ -230,14 +223,17 @@ t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 	}
-	else if (i == 3)
+	else if (i >= 3)
+		stacks = rra(stacks);
+	if (i == 4)
 		stacks = rra(stacks);
 	stacks = pre_push(stacks, 1);
 
 	stacks = three_sized(stacks);
 	stacks = pre_push(stacks, 0);
-	stacks.stacka = pre_rotate(stacks.stacka, 0);
 	stacks = pre_push(stacks, 0);
+	stacks.stacka = pre_rotate(stacks.stacka, 0);
+	stacks.stacka = pre_rotate(stacks.stacka, 0);
 	return (stacks);
 }
 
