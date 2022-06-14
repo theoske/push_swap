@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/14 15:04:59 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/14 15:50:29 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ int	dup_check(int *value, int argc)
 
 int	ft_check(char **argv, int *value, int argc)
 {
-	if (nbr_check(argv) == -1 || dup_check(value, argc) == -1 ||
-		lim_check(argv) == -1)
+	if (nbr_check(argv) == -1 || dup_check(value, argc) == -1
+		|| lim_check(argv) == -1)
 		return (ft_error());
 	if (a_sorted(value, argc) == -1)
 		return (-1);
@@ -107,7 +107,7 @@ t_stacks	swapa(t_stacks stacks)
 	return (stacks);
 }
 
-t_stacks	rra(t_stacks stacks)//dernier passe premier   insertlist(stacks, last)
+t_stacks	rra(t_stacks stacks)
 {
 	t_element	*last;
 	t_element	*ptr;
@@ -125,7 +125,7 @@ t_stacks	rra(t_stacks stacks)//dernier passe premier   insertlist(stacks, last)
 	return (stacks);
 }
 
-t_stacks	three_sized(t_stacks stacks)//123   321   213   312   132  231
+t_stacks	three_sized(t_stacks stacks)
 {
 	int		a;
 	int		b;
@@ -134,101 +134,104 @@ t_stacks	three_sized(t_stacks stacks)//123   321   213   312   132  231
 	a = stacks.stacka->first->nbr;
 	b = stacks.stacka->first->next->nbr;
 	c = stacks.stacka->first->next->next->nbr;
-	if (a > b && b > c)// 321
+	if (a > b && b > c)
 	{
 		stacks = swapa(stacks);
 		stacks = rra(stacks);
 	}
-	else if (a > b && c > b && a < c)//213
+	else if (a > b && c > b && a < c)
 		stacks = swapa(stacks);
-	else if (a > b && a > c && c > b)//312
+	else if (a > b && a > c && c > b)
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
-	else if (b > a && b > c && c > a)//132
+	else if (b > a && b > c && c > a)
 	{
 		stacks = swapa(stacks);
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 	}
-	else if (b > a && b > c && a > c)//231
+	else if (b > a && b > c && a > c)
 		stacks = rra(stacks);
 	return (stacks);
 }
 
-t_stacks	four_sized(t_stacks stacks)//1234  2134    3124    4123
+t_stacks	four_sized(t_stacks stacks)
 {
 	stacks = pre_push(stacks, 1);
 	stacks = three_sized(stacks);
 	stacks = pre_push(stacks, 0);
-	if (stacks.stacka->first->nbr > stacks.stacka->first->next->next->next->nbr)//4123
+	if (stacks.stacka->first->nbr > stacks.stacka->first->next->next->next->nbr)
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
-	else if (stacks.stacka->first->nbr > stacks.stacka->first->next->next->nbr)//3124 
+	else if (stacks.stacka->first->nbr > stacks.stacka->first->next->next->nbr)
 	{
 		stacks = rra(stacks);
 		stacks = swapa(stacks);
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 		stacks.stacka = pre_rotate(stacks.stacka, 0);
 	}
-	else if (stacks.stacka->first->nbr > stacks.stacka->first->next->nbr)//2134
+	else if (stacks.stacka->first->nbr > stacks.stacka->first->next->nbr)
 		stacks = swapa(stacks);
 	return (stacks);
 }
 
-//mettre nbrs en trop dans b et trier a la main
-t_stacks	five_sized(t_stacks stacks)//21345  31245 41235  51234
+int	*find_biggest(t_liste *stack)
 {
 	t_element	*ptr;
 	int			biggest;
-	int			i;
+	int			*placement;
 
-	ptr = stacks.stacka->first;
+	ptr = stack->first;
+	placement = malloc(2 * sizeof(int));
 	biggest = ptr->nbr;
-	while (ptr->next->next)//trouve valeur plus petit nbr et plus grand
+	while (ptr->next->next)
 	{
 		if (ptr->nbr > biggest)
 			biggest = ptr->nbr;
 		ptr = ptr->next;
 	}
-	ptr = stacks.stacka->first;
-	i = 0;
-	while (ptr->nbr != (biggest - 1))//trouve 2e ndex + grand
+	ptr = stack->first;
+	while (ptr->nbr != biggest)
 	{
 		ptr = ptr->next;
-		i++;
+		placement[0]++;
 	}
-	if (i == 1)
-		stacks = swapa(stacks);
-	else if (i == 2)
-	{
-		stacks.stacka = pre_rotate(stacks.stacka, 0);
-		stacks.stacka = pre_rotate(stacks.stacka, 0);
-	}
-	else if (i >= 3)
-		stacks = rra(stacks);
-	if (i == 4)
-		stacks = rra(stacks);
-	
-	stacks = pre_push(stacks, 1);
-	
-	// mettre biggest dans b
-	ptr = stacks.stacka->first;
-	i = 0;
-	while (ptr->nbr != biggest)//trouve index plus petit nbr
+	ptr = stack->first;
+	while (ptr->nbr != (biggest - 1))
 	{
 		ptr = ptr->next;
-		i++;
+		placement[1]++;
 	}
-	if (i == 1)
-		stacks = swapa(stacks);
-	else if (i == 2)
-	{
-		stacks.stacka = pre_rotate(stacks.stacka, 0);
-		stacks.stacka = pre_rotate(stacks.stacka, 0);
-	}
-	else if (i >= 3)
-		stacks = rra(stacks);
-	if (i == 4)
-		stacks = rra(stacks);
-	stacks = pre_push(stacks, 1);
+	return (placement);
+}
 
+//mettre nbrs en trop dans b et trier a la main
+t_stacks	five_sized(t_stacks stacks)
+{
+	t_element	*ptr;
+	int			*tab;
+
+	tab = find_biggest(stacks.stacka);
+	if (tab[1] == 1)
+		stacks = swapa(stacks);
+	else if (tab[1] == 2)
+	{
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	}
+	else if (tab[1] >= 3)
+		stacks = rra(stacks);
+	if (tab[1] == 4)
+		stacks = rra(stacks);
+	stacks = pre_push(stacks, 1);
+	ptr = stacks.stacka->first;
+	if (tab[0] == 1)
+		stacks = swapa(stacks);
+	else if (tab[0] == 2)
+	{
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+		stacks.stacka = pre_rotate(stacks.stacka, 0);
+	}
+	else if (tab[0] >= 3)
+		stacks = rra(stacks);
+	stacks = pre_push(stacks, 1);
 	stacks = three_sized(stacks);
 	stacks = pre_push(stacks, 0);
 	stacks = pre_push(stacks, 0);
@@ -249,7 +252,7 @@ t_stacks	small_sort(t_stacks stacks, int argc)
 		return (five_sized(stacks));
 }
 
-int main(int argc, char *argv[])// pb five
+int main(int argc, char *argv[])
 {
 	int			*value;
 	t_stacks	stacks;
@@ -267,13 +270,6 @@ int main(int argc, char *argv[])// pb five
 		stacks = radix_sort(stacks, argc);
 	else
 		stacks = small_sort(stacks, argc);
-	t_element *ptr = stacks.stacka->first;
-	free (value);
-		while (ptr->next)
-	{
-		printf("%d a\n", ptr->nbr);
-		ptr = ptr->next;
-	}
 	removelist(stacks.stacka);
 	removelist(stacks.stackb);
 	return (0);
