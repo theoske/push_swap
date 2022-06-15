@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:44:43 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/11 17:35:09 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/15 14:01:21 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,17 @@ int	nbr_check(char **argv)
 
 int	neglim_check(char *str)
 {
-	if (ft_strlen(str) > 11 || (ft_strlen(str) == 11 &&
-		ft_strncmp(str, "-2147483648", 11) > 0))
-		return (-1);	
+	if (ft_strlen(str) > 11 || (ft_strlen(str) == 11
+			&& ft_strncmp(str, "-2147483648", 11) > 0))
+		return (-1);
 	return (0);
 }
 
 int	poslim_check(char *str)
 {
-	if (ft_strlen(str) > 10 || (ft_strlen(str) == 10 &&
-		ft_strncmp(str, "2147483647", 10) > 0))
-		return (-1);	
+	if (ft_strlen(str) > 10 || (ft_strlen(str) == 10
+			&& ft_strncmp(str, "2147483647", 10) > 0))
+		return (-1);
 	return (0);
 }
 
@@ -63,7 +63,7 @@ int	lim_check(char **argv)
 		else
 			ret = poslim_check(argv[i]);
 		if (ret == -1)
-			return(-1);
+			return (-1);
 		i++;
 	}
 	return (0);

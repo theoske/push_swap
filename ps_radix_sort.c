@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:51:33 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/11 17:42:30 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/15 14:03:32 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	stack_sorted(t_liste *stacka)
 int	ft_bigbit(int *stack)
 {
 	unsigned long int	i;
-	int	                j;
-	int	            	ret;
+	int					j;
+	int					ret;
 
 	i = 0;
 	j = 0;
@@ -56,12 +56,13 @@ int	ft_bigbit(int *stack)
 t_stacks	radix_sort(t_stacks stacks, int argc)
 {
 	int		i;
+	int		j;
 	int		nbr;
 
 	i = 0;
 	while (stack_sorted(stacks.stacka) == 0)
 	{
-		int j = 0;
+		j = 0;
 		while (++j < argc)
 		{
 			nbr = stacks.stacka->first->nbr;
