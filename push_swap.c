@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/15 13:52:09 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/06/16 17:23:36 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	*order(int *value, int argc)
 		}
 		i++;
 	}
+	free (value);
 	return (nbr);
 }
 
@@ -98,5 +99,6 @@ int	main(int argc, char *argv[])
 		stacks = small_sort(stacks, argc);
 	removelist(stacks.stacka);
 	removelist(stacks.stackb);
+	free (value);
 	return (0);
 }
