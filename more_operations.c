@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:43:50 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/15 13:59:28 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/08/09 18:57:40 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,36 @@ t_stacks	nameless(t_stacks stacks, int tab)
 	else if (tab >= 3)
 		stacks = rra(stacks);
 	return (stacks);
+}
+
+int	*one_argtotab(char **argv, int argc)
+{
+	int		i;
+	int		*tab;
+
+	i = 0;
+	tab = NULL;
+	tab = malloc((argc - 1) * sizeof(int));
+	while (argv[i])
+	{
+		tab[i - 1] = ft_atoi(argv[i]);
+		i++;
+	}
+	return (tab);
+}
+
+int	*one_arg(char **argv, int *argcptr)
+{
+	char	**newargv;
+	int		*value;
+	int		i;
+
+	newargv = ft_split(ft_strjoin(ft_strjoin(argv[0], " "), argv[1]), ' ');
+	i = 0;
+	while (newargv && newargv[i])
+		i++;
+	*argcptr = i;
+	value = one_argtotab(newargv, i);
+	freenewargv(&newargv);
+	return (value);
 }

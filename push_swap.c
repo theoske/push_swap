@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/08/09 18:06:17 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/08/09 18:57:47 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,6 @@ int	*argtotab(char **argv, int argc)
 	return (tab);
 }
 
-int	*one_argtotab(char **argv, int argc)
-{
-	int		i;
-	int		*tab;
-
-	i = 0;
-	tab = NULL;
-	tab = malloc((argc - 1) * sizeof(int));
-	while (argv[i])
-	{
-		tab[i - 1] = ft_atoi(argv[i]);
-		i++;
-	}
-	return (tab);
-}
-
 int	*order(int *value, int argc)
 {
 	int		i;
@@ -52,14 +36,13 @@ int	*order(int *value, int argc)
 
 	i = 0;
 	nbr = malloc(sizeof(int) * (argc - 1));
-	while (i < argc)
+	while (i < argc - 1)
 	{
 		j = 0;
 		nbr[i] = 0;
-		printf("a %d \n", value[i]);
-		while (j < argc)
+		while (j < argc - 1)
 		{
-			if (value[i] < value[j])
+			if (value[i] > value[j])
 				nbr[i]++;
 			j++;
 		}
@@ -96,23 +79,7 @@ t_stacks	small_sort(t_stacks stacks, int argc)
 		return (five_sized(stacks));
 }
 
-int	*one_arg(char **argv, int *argcptr)
-{
-	char	**newargv;
-	int		*value;
-	int		i;
-
-	newargv = ft_split(ft_strjoin(ft_strjoin(argv[0], " "), argv[1]), ' ');
-	i = 0;
-	while (newargv && newargv[i])
-		i++;
-	*argcptr = i;
-	value = one_argtotab(newargv, i);
-	freenewargv(&newargv);
-	return (value);
-}
-
-int	main(int argc, char *argv[])// met pas 1er nbr dans value
+int	main(int argc, char *argv[])
 {
 	int			*value;
 	t_stacks	stacks;
@@ -127,22 +94,12 @@ int	main(int argc, char *argv[])// met pas 1er nbr dans value
 		return (-1);
 	}
 	value = order(value, argc);
-	int i = 0;
-	while (i++ < argc - 1)
-		printf("%d ", value[i]);
 	stacks.stacka = valuetoliste(value, argc);
 	stacks.stackb = listinit();
 	if (argc > 6)
 		stacks = radix_sort(stacks, argc);
 	else
 		stacks = small_sort(stacks, argc);
-	// t_element	*test;
-	// test = stacks.stacka->first;
-	// while (test->next->next)
-	// {
-	// 	printf("%d\n", test->nbr);
-	// 	test = test->next;
-	// }
 	removelist(stacks.stacka);
 	removelist(stacks.stackb);
 	free (value);
