@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:42:02 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/08/09 17:37:19 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/08/09 19:48:04 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,8 @@ int	ft_check(char **argv, int *value, int argc)
 		newargv = ft_split(ft_strjoin(ft_strjoin(argv[0], " "), argv[1]), ' ');
 	if (nbr_check(newargv) == -1 || dup_check(value, argc) == -1
 		|| lim_check(newargv) == -1)
-	{
-		freenewargv(&newargv);
 		return (ft_error());
-	}
-	if (a_sorted(value, argc) == -1)
-	{
-		freenewargv(&newargv);
+	else if (a_sorted(value, argc) == -1)
 		return (-1);
-	}
-	freenewargv(&newargv);
 	return (0);
 }
