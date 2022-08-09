@@ -6,13 +6,13 @@
 #    By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/07 17:56:59 by tkempf-e          #+#    #+#              #
-#    Updated: 2022/06/15 13:51:59 by tkempf-e         ###   ########.fr        #
+#    Updated: 2022/08/09 14:56:29 by tkempf-e         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS	=	ft_atoi.c ps_arguments_tests.c ps_lists_utils.c ps_operations.c \
 			ps_radix_sort.c ps_utils.c push_swap.c checker.c more_operations.c \
-			small_sort.c
+			small_sort.c ft_split.c
 
 OBJS	=	$(SRCS:.c=.o)
 

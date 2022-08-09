@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:34:31 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/07 17:56:39 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/08/09 16:32:25 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,22 @@ int	ft_error(void)
 {
 	ft_putstr("Error\n");
 	return (-1);
+}
+
+void	freenewargv(char ***newargvptr)
+{
+	int		i;
+	char	**newargv;
+	
+	i = 0;
+	newargv = *newargvptr;
+	while (newargv && newargv[i])
+		i++;
+	i--;
+	while (i >= 0)
+	{
+		free (newargv[i]);
+		i--;
+	}
+	free (newargv);
 }

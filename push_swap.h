@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:53:43 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/06/15 13:59:05 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/08/09 17:00:06 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,13 @@ t_stacks		nameless(t_stacks stacks, int tab);
 int				find_biggest(t_liste *stack);
 t_stacks		five_sized_operations(t_stacks stacks);
 t_stacks		five_sized(t_stacks stacks);
+int				ft_nbwords(char const *s, char c);
+char			**ft_tab(char	**tab, char	const *s, char c, int nb_word);
+char			**ft_malloc_tab2d(char const *s, char c);
+char			**ft_split(char const *s, char c);
+int				*one_arg(char **argv, int *argcptr);
+int				*one_argtotab(char **argv, int argc);
+void			freenewargv(char ***newargvptr);
+char			*ft_strjoin(char const *s1, char const *s2);
 
 #endif
