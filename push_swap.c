@@ -6,7 +6,7 @@
 /*   By: tkempf-e <tkempf-e@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:34:37 by tkempf-e          #+#    #+#             */
-/*   Updated: 2022/08/09 17:38:09 by tkempf-e         ###   ########.fr       */
+/*   Updated: 2022/08/09 18:06:17 by tkempf-e         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	*order(int *value, int argc)
 	int		*nbr;
 
 	i = 0;
-	nbr = malloc(sizeof(int) * argc);
+	nbr = malloc(sizeof(int) * (argc - 1));
 	while (i < argc)
 	{
 		j = 0;
@@ -59,7 +59,7 @@ int	*order(int *value, int argc)
 		printf("a %d \n", value[i]);
 		while (j < argc)
 		{
-			if (value[i] > value[j])
+			if (value[i] < value[j])
 				nbr[i]++;
 			j++;
 		}
@@ -106,8 +106,8 @@ int	*one_arg(char **argv, int *argcptr)
 	i = 0;
 	while (newargv && newargv[i])
 		i++;
-	*argcptr = i + 1;
-	value = one_argtotab(newargv, i + 1);
+	*argcptr = i;
+	value = one_argtotab(newargv, i);
 	freenewargv(&newargv);
 	return (value);
 }
